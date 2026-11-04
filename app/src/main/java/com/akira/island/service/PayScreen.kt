@@ -45,7 +45,8 @@ object PayScreenParser {
     private val readyWords = Regex(
         "(подне|прилож|поднос|приклад)\\S*\\s+(\\S+\\s+){0,3}?к\\s+(\\S+\\s+)?(терминал|считыва|ридер)|" +
             "hold\\s+(\\S+\\s+){0,4}?(to|near|close to|against)\\s+(the\\s+)?(payment\\s+)?(terminal|reader)|" +
-            "tap\\s+(\\S+\\s+){0,3}?(to|on)\\s+(the\\s+)?(terminal|reader)|ready to pay|готов\\S*\\s+к\\s+оплате",
+            "tap\\s+(\\S+\\s+){0,3}?(to|on)\\s+(the\\s+)?(terminal|reader)|ready to pay|готов\\S*\\s+к\\s+оплате|" +
+            "(okuyucuya|terminale|pos.?a)\\s+(\\S+\\s+)?(yaklaştır|dokundur|tut)|ödemeye hazır|approchez\\s+(\\S+\\s+){0,3}?(du\\s+)?(terminal|lecteur)",
         RegexOption.IGNORE_CASE,
     )
 
@@ -53,12 +54,13 @@ object PayScreenParser {
     private val paidWords = Regex(
         "оплачено|оплачена|оплата прошла|оплата выполнена|оплата совершена|оплата успешна|успешная оплата|покупка совершена|" +
             "покупка прошла|платёж выполнен|платеж выполнен|платёж прошёл|платеж прошел|payment successful|payment complete|" +
-            "payment approved|\\bpaid\\b|pembayaran berhasil|pago realizado|pagamento aprovado",
+            "payment approved|\\bpaid\\b|pembayaran berhasil|pago realizado|pagamento aprovado|ödeme başarılı|ödeme tamamlandı|ödeme onaylandı|ödendi|" +
+            "paiement réussi|paiement effectué|paiement accepté",
         RegexOption.IGNORE_CASE,
     )
 
     private val failureWords = Regex(
-        "не прошл|не удал|отклон|отказ|ошибк|недостаточно|не хватает|не оплач|declined|failed|error|insufficient|unsuccess|try again|повтор",
+        "не прошл|не удал|отклон|отказ|ошибк|недостаточно|не хватает|не оплач|declined|failed|error|insufficient|unsuccess|try again|повтор|başarısız|reddedildi|yetersiz|tekrar deneyin|échec|refusé",
         RegexOption.IGNORE_CASE,
     )
 

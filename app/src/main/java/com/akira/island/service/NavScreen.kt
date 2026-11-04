@@ -129,14 +129,15 @@ object NavScreenParser {
     )
 
     private val number = Regex("""^\d{1,4}(?:[.,]\d{1,2})?$""")
-    private val unit = Regex("""^(км|м|мин|ч|km|m|mi|ft|min|h)\.?$""", RegexOption.IGNORE_CASE)
+    private val unit = Regex("""^(км|м|мин|ч|km|m|mi|ft|min|h|dk|sa|saat)\.?$""", RegexOption.IGNORE_CASE)
     private val distanceRe = Regex("""^\d{1,4}(?:[.,]\d{1,2})?\s?(км|м|km|m|mi|ft)\.?$""", RegexOption.IGNORE_CASE)
     private val clock = Regex("""^\d{1,2}:\d{2}$""")
-    private val minutes = Regex("""^\d{1,3}\s?(мин|min)\.?$""", RegexOption.IGNORE_CASE)
-    private val hours = Regex("""^\d{1,3}\s?(ч|h)\.?(\s?\d{1,2}\s?(мин|min)\.?)?$""", RegexOption.IGNORE_CASE)
+    private val minutes = Regex("""^\d{1,3}\s?(мин|min|dk|dakika)\.?$""", RegexOption.IGNORE_CASE)
+    private val hours = Regex("""^\d{1,3}\s?(ч|h|sa|saat)\.?(\s?\d{1,2}\s?(мин|min|dk)\.?)?$""", RegexOption.IGNORE_CASE)
     private val letters = Regex("""\p{L}{3,}""")
     private val noise = setOf(
         "следуйте по шагам", "двигайтесь по шагам", "продолжить по gps", "прибытие", "в пути", "маршрут", "обзор", "меню", "поиск", "назад",
+        "varış", "rota", "genel bakış", "menü", "ara", "geri",
     )
 
     fun parse(raw: List<ScreenItem>): Result {

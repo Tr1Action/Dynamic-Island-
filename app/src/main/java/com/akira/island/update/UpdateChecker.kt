@@ -61,7 +61,7 @@ sealed interface DownloadState {
  * поэтому APK ставится поверх.
  */
 object UpdateChecker {
-    const val REPO = "Akira9021/Dynamic-Island-"
+    const val REPO = "Tr1Action/Dynamic-Island-"
     private const val CHECK_EVERY_MS = 3 * 60 * 60 * 1000L
 
     val state = MutableStateFlow<UpdateState>(UpdateState.Idle)
@@ -154,7 +154,7 @@ object UpdateChecker {
     }
 
     /** Имя скачанного APK: по версии, без лишних символов из тега. */
-    private fun apkName(version: String) = "DynamicIsland-${version.filter { it.isLetterOrDigit() || it == '.' }}.apk"
+    private fun apkName(version: String) = "DinamikAda-${version.filter { it.isLetterOrDigit() || it == '.' }}.apk"
 
     /**
      * Скачанный APK именно этой версии, если он ещё лежит в кэше: тогда «Установить» ставит его без новой
@@ -324,9 +324,11 @@ object UpdateChecker {
  */
 fun localNotes(markdown: String): List<String> {
     val all = markdown.lines()
-    val start = all.indexOfFirst { it.startsWith("## ") && (if (Lang.en) "English" in it else "Русский" in it) }
+    val want = when (Lang.code) { "ru" -> "Русский"; "tr" -> "Türkçe"; else -> "English" }
+    val start = all.indexOfFirst { it.startsWith("## ") && want in it }
+        .takeIf { it >= 0 } ?: all.indexOfFirst { it.startsWith("## ") && "English" in it }
     if (start < 0) return all
     val rest = all.drop(start + 1)
-    val end = rest.indexOfFirst { it.startsWith("## ") && ("English" in it || "Русский" in it) }
+    val end = rest.indexOfFirst { it.startsWith("## ") && ("English" in it || "Русский" in it || "Türkçe" in it) }
     return if (end < 0) rest else rest.take(end)
 }

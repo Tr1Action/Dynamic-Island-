@@ -676,7 +676,7 @@ private fun IdleExpanded(s: IslandSettings, battery: BatteryInfo) {
     val now = rememberWallNow(1000)
     val time = DateFormat.getTimeFormat(context).format(Date(now))
     // «Пятница, 24 октября» или «Friday, October 24» — на языке острова
-    val date = SimpleDateFormat(if (Lang.en) "EEEE, MMMM d" else "EEEE, d MMMM", Lang.locale).format(Date(now))
+    val date = SimpleDateFormat(when (Lang.code) { "en" -> "EEEE, MMMM d"; "tr" -> "d MMMM EEEE"; else -> "EEEE, d MMMM" }, Lang.locale).format(Date(now))
         .replaceFirstChar { it.titlecase(Lang.locale) }
     val alarm by IslandBus.nextAlarm.collectAsState()
     Column {
@@ -693,7 +693,7 @@ private fun IdleExpanded(s: IslandSettings, battery: BatteryInfo) {
                         Icon(Ios.alarm, null, tint = AlarmTint, modifier = Modifier.size(14.dp))
                         Spacer(Modifier.width(5.dp))
                         Text(tr("${wakeTime(context, a.triggerAt)} · через ${durationWords(a.triggerAt - now)}",
-                            "${wakeTime(context, a.triggerAt)} · in ${durationWords(a.triggerAt - now)}"),
+                            "${wakeTime(context, a.triggerAt)} · " + (if (Lang.turkish) "${durationWords(a.triggerAt - now)} sonra" else "in ${durationWords(a.triggerAt - now)}")),
                             color = AlarmTint, fontSize = 13.sp, maxLines = 1)
                     }
                 }

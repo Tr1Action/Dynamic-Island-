@@ -156,7 +156,7 @@ object Messages {
         }.orEmpty()
         val reply = all.firstOrNull { it.isReply }
         val read = all.firstOrNull { a ->
-            !a.isReply && listOf("прочит", "read").any { it in a.title.lowercase() }
+            !a.isReply && listOf("прочит", "read", "okundu").any { it in a.title.lowercase() }
         }
         val other = all.firstOrNull { !it.isReply }
         return listOfNotNull(reply, read ?: other)

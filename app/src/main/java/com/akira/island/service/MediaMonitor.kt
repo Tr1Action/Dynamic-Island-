@@ -251,9 +251,9 @@ class MediaMonitor(private val context: Context) {
 
     private companion object {
         const val PAUSE_KEEP_MS = 45_000L
-        val DislikeWords = Regex("dislike|не нрав|thumbs?.?down|ban|block")
-        val LikeWords = Regex("like|нрав|favou?rite|heart|thumbs?.?up|любим|избран")
-        val UndoWords = Regex("unlike|un_like|undo|remove|убрать|удалить|отмен")
+        val DislikeWords = Regex("dislike|не нрав|thumbs?.?down|ban|block|beğenme")
+        val LikeWords = Regex("like|нрав|favou?rite|heart|thumbs?.?up|любим|избран|beğen|favori")
+        val UndoWords = Regex("unlike|un_like|undo|remove|убрать|удалить|отмен|kaldır|geri al")
     }
 }
 

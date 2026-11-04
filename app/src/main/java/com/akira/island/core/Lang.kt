@@ -15,22 +15,43 @@ import java.util.Locale
  * иначе английский. Строки пишутся парой прямо в коде: tr("Зарядка", "Charging").
  */
 object Lang {
-    val en: Boolean
+    /** Код языка: "ru", "en" или "tr". «Как в системе» — русский или турецкий, если телефон на нём, иначе английский. */
+    val code: String
         get() = when (SettingsRepo.current.language) {
-            AppLanguage.EN -> true
-            AppLanguage.RU -> false
-            AppLanguage.SYSTEM -> systemLanguage() != "ru"
+            AppLanguage.EN -> "en"
+            AppLanguage.RU -> "ru"
+            AppLanguage.TR -> "tr"
+            AppLanguage.SYSTEM -> when (systemLanguage()) {
+                "ru" -> "ru"
+                "tr" -> "tr"
+                else -> "en"
+            }
         }
 
-    /** Для дат: «пятница, 24 октября» или «Friday, October 24» */
-    val locale: Locale get() = if (en) Locale.ENGLISH else Locale.forLanguageTag("ru")
+    /** Не русский: английский или турецкий (форматы и единицы — не русские) */
+    val en: Boolean get() = code != "ru"
+
+    /** Турецкий интерфейс */
+    val turkish: Boolean get() = code == "tr"
+
+    /** Для дат: «пятница, 24 октября», «Friday, October 24» или «4 Kasım Çarşamba» */
+    val locale: Locale
+        get() = when (code) {
+            "ru" -> Locale.forLanguageTag("ru")
+            "tr" -> Locale.forLanguageTag("tr")
+            else -> Locale.ENGLISH
+        }
 
     private fun systemLanguage(): String =
         runCatching { Resources.getSystem().configuration.locales[0].language }.getOrNull() ?: Locale.getDefault().language
 }
 
 /** Строка на текущем языке. */
-fun tr(ru: String, en: String): String = if (Lang.en) en else ru
+fun tr(ru: String, en: String): String = when (Lang.code) {
+    "ru" -> ru
+    "tr" -> TurkishStrings.of(en)
+    else -> en
+}
 
 /**
  * Сменили язык (в настройках или в системе) — всё внутри рисуется заново уже на новом языке.
@@ -41,5 +62,5 @@ fun LangScope(content: @Composable () -> Unit) {
     val s by SettingsRepo.state.collectAsState()
     // Язык системы меняется вместе с конфигурацией — чтение подписывает на неё
     LocalConfiguration.current
-    key(s.language, Lang.en) { content() }
+    key(s.language, Lang.code) { content() }
 }

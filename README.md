@@ -1,3 +1,5 @@
+> 🇹🇷 **Türkçe sürüm (Dinamik Ada):** [README.tr.md](README.tr.md)
+
 <p align="center">
 <a href="README.md"><img src="docs/lang/ru-on.svg" height="46" alt="Русский"></a>&nbsp;&nbsp;<a href="README.en.md"><img src="docs/lang/en-off.svg" height="46" alt="English"></a>
 </p>

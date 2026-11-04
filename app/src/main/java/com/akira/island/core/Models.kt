@@ -106,7 +106,7 @@ data class ChronoInfo(
 
     /** Запись экрана или звука — показывается красным. */
     val isRecording: Boolean
-        get() = title.lowercase().let { t -> "record" in t || "запис" in t }
+        get() = title.lowercase().let { t -> "record" in t || "запис" in t || "kayıt" in t || "kaydı" in t || "enregistr" in t }
 }
 
 /** Звонок из уведомления звонилки: входящий или идущий разговор. */
