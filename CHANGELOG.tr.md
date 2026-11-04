@@ -4,6 +4,10 @@
 
 Dinamik Ada, [Akira9021/Dynamic-Island-](https://github.com/Akira9021/Dynamic-Island-) projesinin Türkçe sürümüdür. Eski sürümlerin notları için İngilizce değişiklik günlüğüne bakın.
 
+## [1.8.1] — 2026-11-04
+
+- 🌫️ **Bulanıklık gücü**: Görünüm → Renk ve cam altında yeni kaydırıcı. Varsayılan bulanıklık daha güçlü (%70): arkadaki ikonlar ve yazılar HyperOS kontrol merkezi gibi buzlu cama dönüşür, adadaki yazılar daha rahat okunur.
+
 ## [1.8.0] — 2026-11-04
 
 - 🫧 **Gerçek Liquid Glass**: açılan ada artık arkasındaki ekranı gerçekten bulanıklaştırıyor — HyperOS 3 kontrol merkezi ve bildirim paneliyle aynı sistem bulanıklığı. Bulanıklık adanın açılma animasyonunu ve köşelerini birebir izler (Görünüm → Renk ve cam → **Gerçek bulanıklık**).

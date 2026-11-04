@@ -93,6 +93,12 @@ fun CapsuleScreen(open: (Screen) -> Unit) {
                         "The glass blurs the screen under it, like the HyperOS 3 control center. Needs advanced materials in display settings"),
                     s.glassBlur, color = Tile.Blue, badge = tr("Новое", "New"),
                 ) { v -> SettingsRepo.update { copy(glassBlur = v) } }
+                if (s.glassBlur) {
+                    GroupSlider(
+                        Pos.Middle, Icons.Rounded.BlurCircular, tr("Сила размытия", "Blur strength"),
+                        value = s.glassBlurStrength.toFloat(), range = 0f..100f, label = "${s.glassBlurStrength}%", color = Tile.Blue,
+                    ) { v -> SettingsRepo.update { copy(glassBlurStrength = v.toInt()) } }
+                }
                 GroupToggle(
                     Pos.Middle, Icons.Rounded.Contrast, tr("Чёрный в покое", "Black when collapsed"),
                     tr("Свёрнутый остров остаётся чёрным и прячет камеру, стеклом становится раскрытый",

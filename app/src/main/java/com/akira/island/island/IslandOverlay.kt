@@ -122,8 +122,8 @@ private val WidthDemo = com.akira.island.core.LiveInfo(
 /** Цвет острова на экране «Размер и положение»: его нужно спрятать под вырезом камеры. */
 val CalibrationRed = Color(0xFFFF6B6B)
 
-/** Радиус настоящего размытия под раскрытым стеклом. */
-private const val GLASS_BLUR_DP = 24
+/** Радиус настоящего размытия под раскрытым стеклом: от «Силы размытия» 0…100% — 8…72 dp. */
+private fun glassBlurDp(strength: Int): Float = 8f + 0.64f * strength.coerceIn(0, 100)
 
 /** Запас вокруг острова в окне: под тень, «желе» и пузырь. */
 const val ISLAND_PAD_DP = 12
@@ -680,7 +680,7 @@ private fun IslandBody(
         // в настройках; если система его выключила (экономия заряда), радиус просто 0 — состояние не сбивается
         if (glassOn && s.glassBlur) {
             val density = LocalDensity.current
-            val blurPx = with(density) { GLASS_BLUR_DP.dp.toPx() }
+            val blurPx = with(density) { glassBlurDp(s.glassBlurStrength).dp.toPx() }
             BlurBackdrop(
                 Modifier.matchParentSize(),
                 radiusPx = { if (realBlur) blurPx * glassReveal.value else 0f },
