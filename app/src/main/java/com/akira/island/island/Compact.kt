@@ -705,7 +705,7 @@ private fun ReplyField(action: MsgAction, accent: Color, onSend: (String) -> Uni
                 decorationBox = { inner ->
                     Box(contentAlignment = Alignment.CenterStart) {
                         if (text.isEmpty()) {
-                            Text("${action.title.ifBlank { "Ответ" }}…", color = Tints.Gray, fontSize = 15.sp, maxLines = 1)
+                            Text("${action.title.ifBlank { tr("Ответ", "Reply") }}…", color = Tints.Gray, fontSize = 15.sp, maxLines = 1)
                         }
                         inner()
                     }
@@ -851,7 +851,7 @@ private fun LiveBanner(n: Notice, l: LiveInfo, s: IslandSettings, wideWidth: Dp)
                     overflow = TextOverflow.Ellipsis, textAlign = TextAlign.End)
             }
             // На узкой плашке — коротко: «12:31 · 19 ч»; полностью — в раскрытом виде
-            val shortEta = l.eta?.removePrefix("Прибытие в ")?.removePrefix("Arrive ")?.split(" · ")?.take(2)?.joinToString(" · ")
+            val shortEta = l.eta?.removePrefix("Прибытие в ")?.removePrefix("Arrive ")?.removePrefix("Varış ")?.split(" · ")?.take(2)?.joinToString(" · ")
             if (shortEta != null) {
                 Text(shortEta, color = tint, fontSize = 13.sp, style = Digits, maxLines = 1)
             }

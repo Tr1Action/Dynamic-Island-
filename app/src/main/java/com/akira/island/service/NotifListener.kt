@@ -107,7 +107,7 @@ object NotificationParser {
                 val down = if (pausedMs != null) looksLikeTimer(n, title) else ex.getBoolean(Notification.EXTRA_CHRONOMETER_COUNT_DOWN, false)
                 val stop = n.actions?.firstOrNull { a ->
                     val t = a.title?.toString()?.lowercase().orEmpty()
-                    listOf("стоп", "останов", "заверш", "stop", "finish").any { it in t }
+                    listOf("стоп", "останов", "заверш", "stop", "finish", "durdur", "bitir", "arrêter").any { it in t }
                 }?.actionIntent
                 put(sbn.key, ChronoInfo(sbn.key, sbn.packageName, title, icon(context, sbn.packageName), n.`when`, down, sbn.postTime, stop,
                     pausedMs = pausedMs, pause = buttons[ClockAction.PAUSE], resume = buttons[ClockAction.START],
@@ -189,7 +189,7 @@ object NotificationParser {
     private fun looksLikeTimer(n: Notification, title: String): Boolean {
         val t = (title + " " + n.channelId.orEmpty()).lowercase()
         return when {
-            "секундомер" in t || "stopwatch" in t -> false
+            "секундомер" in t || "stopwatch" in t || "kronometre" in t || "chronomètre" in t -> false
             else -> true
         }
     }

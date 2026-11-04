@@ -216,7 +216,7 @@ fun ReleaseNotes(markdown: String, modifier: Modifier = Modifier) {
             val line = raw.trimEnd()
             when {
                 line.isBlank() || line.startsWith("## ") || line.startsWith("# ") || line == "---" ||
-                    line.startsWith("**Установка") || line.startsWith("**Install") -> Unit
+                    line.startsWith("**Установка") || line.startsWith("**Install") || line.startsWith("**Kurulum") -> Unit
                 line.startsWith("### ") -> Text(
                     line.removePrefix("### "), color = Ui.Primary, fontSize = 15.sp, fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.padding(top = 8.dp),
@@ -242,4 +242,4 @@ private fun inline(text: String): AnnotatedString = buildAnnotatedString {
 }
 
 /** «Что нового» внутри приложения на его языке. */
-private fun whatsNewFile() = if (Lang.en) "whatsnew.en.md" else "whatsnew.md"
+private fun whatsNewFile() = when (Lang.code) { "ru" -> "whatsnew.md"; "tr" -> "whatsnew.tr.md"; else -> "whatsnew.en.md" }

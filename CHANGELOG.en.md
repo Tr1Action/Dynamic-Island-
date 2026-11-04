@@ -6,6 +6,11 @@ Versioning: the second number (1.5, 1.6…) means new and changed features, the 
 
 > Since 1.6.1 the app and the island speak English (Features → General → Language). Earlier versions were in Russian only, so older entries give the Russian label in brackets.
 
+## [1.7.0] — 2026-11-04
+
+- 🇹🇷 **Turkish** language (Features → General → Language), Turkish dates and units, and Turkish Clock, navigation and payment screens are recognized.
+- 🏝️ Fork by Tr1Action: the app is now called Dinamik Ada (`com.tr1action.island`) with its own signing key; updates come from Tr1Action/Dynamic-Island-.
+
 ## [1.6.5] — 2026-10-28
 
 - 🎬 **Liquid expansion** — new in Appearance → Animations: the content grows together with the island and emerges from a blur; duration and bounce follow your settings.

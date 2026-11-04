@@ -60,16 +60,16 @@ enum class ClockAction { START, PAUSE, RESET }
 
 /** Подписи кнопок «Часов» — для нажатий на экране, кнопок уведомления и поиска кнопки, которую нажмёт остров. */
 object ClockWords {
-    private val start = listOf("старт", "start", "начать", "пуск", "запуст", "продолж", "возобнов", "resume")
-    private val pause = setOf("пауза", "pause", "стоп", "stop")
-    private val reset = listOf("сброс", "reset", "удал", "delete", "отмен", "cancel", "очист", "clear")
+    private val start = listOf("старт", "start", "начать", "пуск", "запуст", "продолж", "возобнов", "resume", "başlat", "devam", "sürdür", "démarrer", "reprendre")
+    private val pause = setOf("пауза", "pause", "стоп", "stop", "duraklat", "durdur")
+    private val reset = listOf("сброс", "reset", "удал", "delete", "отмен", "cancel", "очист", "clear", "sıfırla", "sil", "réinitialiser", "supprimer")
     private val nonLetters = Regex("[^\\p{L}]+")
 
     /** Кнопки на экране «Часов», которые остров ищет и нажимает сам, — подпись целиком. */
     val labels = mapOf(
-        ClockAction.START to listOf("Старт", "Начать", "Продолжить", "Пуск", "Возобновить", "Start", "Resume"),
-        ClockAction.PAUSE to listOf("Пауза", "Стоп", "Pause", "Stop"),
-        ClockAction.RESET to listOf("Сбросить", "Сброс", "Удалить", "Reset", "Delete"),
+        ClockAction.START to listOf("Старт", "Начать", "Продолжить", "Пуск", "Возобновить", "Start", "Resume", "Başlat", "Devam et", "Sürdür", "Démarrer", "Reprendre"),
+        ClockAction.PAUSE to listOf("Пауза", "Стоп", "Pause", "Stop", "Duraklat", "Durdur"),
+        ClockAction.RESET to listOf("Сбросить", "Сброс", "Удалить", "Reset", "Delete", "Sıfırla", "Sil", "Réinitialiser"),
     )
 
     /** По началу слова; «стоп» — только целым словом, иначе совпадёт «Stopwatch». */
@@ -615,8 +615,8 @@ class ClockScreenReader(private val service: AccessibilityService, private val s
             if (node.isSelected && tabs[0] == null) {
                 val t = text.lowercase()
                 tabs[0] = when {
-                    "секундомер" in t || "stopwatch" in t -> Kind.STOPWATCH
-                    "таймер" in t || "timer" in t -> Kind.TIMER
+                    "секундомер" in t || "stopwatch" in t || "kronometre" in t || "chronomètre" in t -> Kind.STOPWATCH
+                    "таймер" in t || "timer" in t || "zamanlayıcı" in t || "minuteur" in t -> Kind.TIMER
                     else -> null
                 }
             }
@@ -707,8 +707,8 @@ class ClockScreenReader(private val service: AccessibilityService, private val s
         val INACTIVE_MS: Long get() = SettingsRepo.current.noticeDurationMs.toLong()
         private const val TIMER_KEY = KEY_PREFIX + "timer"
         private const val STOPWATCH_KEY = KEY_PREFIX + "stopwatch"
-        private val TIMER_TABS = listOf("Таймер", "Timer")
-        private val STOPWATCH_TABS = listOf("Секундомер", "Stopwatch")
+        private val TIMER_TABS = listOf("Таймер", "Timer", "Zamanlayıcı", "Minuteur")
+        private val STOPWATCH_TABS = listOf("Секундомер", "Stopwatch", "Kronometre", "Chronomètre")
     }
 }
 
