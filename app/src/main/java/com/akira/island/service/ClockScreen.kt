@@ -602,6 +602,7 @@ class ClockScreenReader(private val service: AccessibilityService, private val s
         val text = (node.text ?: node.contentDescription)?.toString()?.trim().orEmpty()
         var keep = false
         if (text.isNotEmpty() && node.isVisibleToUser) {
+            AlarmCountdownParser.parse(text)?.let { AlarmFix.learnFromCountdown(it) }
             if (ClockScreenParser.parse(text) != null) {
                 val b = Rect()
                 node.getBoundsInScreen(b)

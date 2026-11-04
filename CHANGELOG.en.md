@@ -6,6 +6,10 @@ Versioning: the second number (1.5, 1.6…) means new and changed features, the 
 
 > Since 1.6.1 the app and the island speak English (Features → General → Language). Earlier versions were in Russian only, so older entries give the Russian label in brackets.
 
+## [1.7.1] — 2026-11-04
+
+- ⏰ **Alarm time fix**: when Xiaomi Clock reports the next alarm an hour off, the island learns the real time from Clock's “Alarm in …” text and corrects it.
+
 ## [1.7.0] — 2026-11-04
 
 - 🇹🇷 **Turkish** language (Features → General → Language), Turkish dates and units, and Turkish Clock, navigation and payment screens are recognized.
