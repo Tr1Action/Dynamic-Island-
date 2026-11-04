@@ -376,6 +376,10 @@ fun PillButton(
  *
  * [reveal] (0…1) — насколько остров стал стеклом: 0 — сплошная заливка [base] (свёрнутый остров
  * остаётся чёрным, как на iPhone), 1 — полное стекло. Переход плавный, вместе с раскрытием.
+ *
+ * [under] — тело и свет под содержимым, [over] — кромка и дисперсия поверх. С настоящим размытием их
+ * рисуют порознь: системный слой размытия ([BlurBackdrop]) стирает всё, что нарисовано под ним
+ * (режим SRC), поэтому тело стекла кладётся отдельным слоем уже поверх него — см. [glassUnder].
  */
 fun Modifier.glassSurface(
     shape: Shape,
@@ -384,6 +388,8 @@ fun Modifier.glassSurface(
     tilt: () -> Float = { 0f },
     sheen: () -> Float = { -1f },
     reveal: () -> Float = { 1f },
+    under: Boolean = true,
+    over: Boolean = true,
 ): Modifier = drawWithCache {
     val w = size.width
     val h = size.height
@@ -408,54 +414,56 @@ fun Modifier.glassSurface(
         val r = reveal().coerceIn(0f, 1f)
         if (r <= 0.001f) {
             // Свёрнутый остров — сплошной, без бликов
-            drawRect(base.copy(alpha = 1f))
+            if (under) drawRect(base.copy(alpha = 1f))
             drawContent()
             return@onDrawWithContent
         }
+        if (under) {
+            // Тело стекла: из сплошной заливки плавно становится полупрозрачным
+            drawRect(base.copy(alpha = 1f + (a * 0.8f - 1f) * r))
+            drawRect(veil, alpha = r)
+            drawRect(shade, alpha = r)
 
-        // Тело стекла: из сплошной заливки плавно становится полупрозрачным
-        drawRect(base.copy(alpha = 1f + (a * 0.8f - 1f) * r))
-        drawRect(veil, alpha = r)
-        drawRect(shade, alpha = r)
-
-        // Свет сверху и каустика у противоположного края
-        drawRect(
-            Brush.radialGradient(
-                listOf(Color.White.copy(alpha = 0.26f), Color.Transparent),
-                center = Offset(w * (0.22f + 0.30f * t), 0f),
-                radius = w * 0.55f,
-            ),
-            alpha = r,
-        )
-        drawRect(
-            Brush.radialGradient(
-                listOf(Color.White.copy(alpha = 0.20f), Color.Transparent),
-                center = Offset(w * (0.80f + 0.15f * t), h),
-                radius = w * 0.45f,
-            ),
-            alpha = r,
-        )
-
-        // Бегущий блик при смене содержимого
-        val shine = sheen()
-        if (shine in 0f..1f) {
-            val x = -w * 0.3f + w * 1.6f * shine
+            // Свет сверху и каустика у противоположного края
             drawRect(
-                Brush.linearGradient(
-                    0f to Color.Transparent,
-                    0.5f to Color.White.copy(alpha = 0.24f),
-                    1f to Color.Transparent,
-                    start = Offset(x - w * 0.25f, 0f),
-                    end = Offset(x + w * 0.25f, h * 0.6f),
+                Brush.radialGradient(
+                    listOf(Color.White.copy(alpha = 0.26f), Color.Transparent),
+                    center = Offset(w * (0.22f + 0.30f * t), 0f),
+                    radius = w * 0.55f,
                 ),
                 alpha = r,
             )
+            drawRect(
+                Brush.radialGradient(
+                    listOf(Color.White.copy(alpha = 0.20f), Color.Transparent),
+                    center = Offset(w * (0.80f + 0.15f * t), h),
+                    radius = w * 0.45f,
+                ),
+                alpha = r,
+            )
+
+            // Бегущий блик при смене содержимого
+            val shine = sheen()
+            if (shine in 0f..1f) {
+                val x = -w * 0.3f + w * 1.6f * shine
+                drawRect(
+                    Brush.linearGradient(
+                        0f to Color.Transparent,
+                        0.5f to Color.White.copy(alpha = 0.24f),
+                        1f to Color.Transparent,
+                        start = Offset(x - w * 0.25f, 0f),
+                        end = Offset(x + w * 0.25f, h * 0.6f),
+                    ),
+                    alpha = r,
+                )
+            }
+
+            // Свечение вдоль кромки: полоски убывающей яркости складываются в плавный спад внутрь
+            for (stroke in glow) drawOutline(outline, glowColor, alpha = r, style = stroke)
         }
 
-        // Свечение вдоль кромки: полоски убывающей яркости складываются в плавный спад внутрь
-        for (stroke in glow) drawOutline(outline, glowColor, alpha = r, style = stroke)
-
         drawContent()
+        if (!over) return@onDrawWithContent
 
         // Кромка-линза: яркая слева сверху и справа снизу, посередине почти гаснет; при наклоне сдвигается
         val shift = t * w * 0.35f
@@ -475,6 +483,16 @@ fun Modifier.glassSurface(
         translate(dp, dp) { drawOutline(outline, Color(0xFFFF8AD8).copy(alpha = 0.18f), alpha = r, style = fringe) }
     }
 }
+
+/** Только тело и свет стекла (без кромки) — слой поверх настоящего размытия, под содержимым острова. */
+fun Modifier.glassUnder(
+    shape: Shape,
+    base: Color,
+    opacity: Float,
+    tilt: () -> Float = { 0f },
+    sheen: () -> Float = { -1f },
+    reveal: () -> Float = { 1f },
+): Modifier = glassSurface(shape, base, opacity, tilt, sheen, reveal, under = true, over = false)
 
 /**
  * Знак бесконтактной оплаты (Contactless Indicator, EMVCo) — тот самый, что печатают на терминалах

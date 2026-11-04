@@ -6,6 +6,10 @@ Versioning: the second number (1.5, 1.6…) means new and changed features, the 
 
 > Since 1.6.1 the app and the island speak English (Features → General → Language). Earlier versions were in Russian only, so older entries give the Russian label in brackets.
 
+## [1.8.2] — 2026-11-04
+
+- ⚫ **Black when collapsed, fixed**: with real blur on, the collapsed island looked transparent instead of black. The system blur layer wipes whatever is drawn under it; the glass body is now drawn on top of it, so the collapsed island is black again and the expanded glass keeps its tint and highlights.
+
 ## [1.8.1] — 2026-11-04
 
 - 🌫️ **Blur strength**: a new slider under Appearance → Color and glass. The default blur is stronger (70%): icons and text behind the island turn into frosted glass like the HyperOS control center, so the island's text reads better.
