@@ -4,6 +4,10 @@
 
 Dinamik Ada, [Akira9021/Dynamic-Island-](https://github.com/Akira9021/Dynamic-Island-) projesinin Türkçe sürümüdür. Eski sürümlerin notları için İngilizce değişiklik günlüğüne bakın.
 
+## [1.8.2] — 2026-11-04
+
+- ⚫ **Kapalıyken siyah düzeltildi**: gerçek bulanıklık açıkken küçük ada siyah yerine saydam görünüyordu. Sistem bulanıklık katmanı altındaki her şeyi siliyordu; camın gövdesi artık onun üstüne çiziliyor. Küçük ada yine siyah, açılan ada da cam rengini ve parlamalarını doğru gösteriyor.
+
 ## [1.8.1] — 2026-11-04
 
 - 🌫️ **Bulanıklık gücü**: Görünüm → Renk ve cam altında yeni kaydırıcı. Varsayılan bulanıklık daha güçlü (%70): arkadaki ikonlar ve yazılar HyperOS kontrol merkezi gibi buzlu cama dönüşür, adadaki yazılar daha rahat okunur.

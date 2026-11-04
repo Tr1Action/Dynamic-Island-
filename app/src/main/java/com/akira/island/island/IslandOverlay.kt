@@ -529,6 +529,8 @@ private fun IslandBody(
     )
     val crossBlur = rememberCrossWindowBlur()
     val realBlur = glassOn && s.glassBlur && !s.reduceEffects && crossBlur
+    // Слой размытия стоит в острове, пока размытие включено в настройках (даже если система его сейчас выключила)
+    val blurLayer = glassOn && s.glassBlur
 
     val current by rememberUpdatedState(primary)
     val isExpanded by rememberUpdatedState(expanded)
@@ -562,9 +564,11 @@ private fun IslandBody(
             }
             .then(
                 if (glassOn) {
+                    // С настоящим размытием тело стекла рисуется слоем поверх него (внутри острова), здесь — только кромка
                     Modifier.glassSurface(
                         shape, Color(s.color), s.glassOpacity / 100f,
                         tilt = { tilt.value }, sheen = { sheen.value }, reveal = { glassReveal.value },
+                        under = !blurLayer,
                     )
                 } else {
                     Modifier.background(if (calibrating) CalibrationRed else Color(s.color))
@@ -678,7 +682,7 @@ private fun IslandBody(
         // Настоящее размытие под стеклом: слой по форме острова, под содержимым (касания идут кнопкам).
         // Сам он ничего не рисует — размывает SurfaceFlinger под окном. Слой есть, пока размытие включено
         // в настройках; если система его выключила (экономия заряда), радиус просто 0 — состояние не сбивается
-        if (glassOn && s.glassBlur) {
+        if (blurLayer) {
             val density = LocalDensity.current
             val blurPx = with(density) { glassBlurDp(s.glassBlurStrength).dp.toPx() }
             BlurBackdrop(
@@ -686,6 +690,14 @@ private fun IslandBody(
                 radiusPx = { if (realBlur) blurPx * glassReveal.value else 0f },
                 cornerPx = { with(density) { corner.value.toPx() } },
                 notch = s.notch,
+            )
+            // Тело стекла — поверх размытия: системный слой стирает то, что под ним. Свёрнутый остров здесь
+            // же заливается сплошным цветом
+            Spacer(
+                Modifier.matchParentSize().glassUnder(
+                    shape, Color(s.color), s.glassOpacity / 100f,
+                    tilt = { tilt.value }, sheen = { sheen.value }, reveal = { glassReveal.value },
+                ),
             )
         }
         // Смена содержимого: с «Жидким раскрытием» новое вырастает из прежнего вместе с формой острова,
