@@ -1,3 +1,7 @@
+### 🫧 Real Liquid Glass
+- Appearance → Color and glass → **Liquid Glass**: the expanded island really blurs the screen behind it, like the HyperOS 3 control center. Collapsed, it stays black and hides the camera.
+- Needs **Advanced materials** on in display settings.
+
 ### 🎬 Liquid expansion
 - Appearance → Animations → **Liquid expansion**: the content grows together with the island and emerges from a blur. Duration and bounce follow your settings.
 

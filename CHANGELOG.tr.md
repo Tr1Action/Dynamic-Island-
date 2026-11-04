@@ -4,6 +4,12 @@
 
 Dinamik Ada, [Akira9021/Dynamic-Island-](https://github.com/Akira9021/Dynamic-Island-) projesinin Türkçe sürümüdür. Eski sürümlerin notları için İngilizce değişiklik günlüğüne bakın.
 
+## [1.8.0] — 2026-11-04
+
+- 🫧 **Gerçek Liquid Glass**: açılan ada artık arkasındaki ekranı gerçekten bulanıklaştırıyor — HyperOS 3 kontrol merkezi ve bildirim paneliyle aynı sistem bulanıklığı. Bulanıklık adanın açılma animasyonunu ve köşelerini birebir izler (Görünüm → Renk ve cam → **Gerçek bulanıklık**).
+- ⚫ **Kapalıyken siyah**: küçük ada siyah kalır ve kamera deliğini gizler; açılınca yumuşak bir geçişle cama dönüşür. Kapatırsanız ada her zaman cam olur.
+- ℹ️ Bulanıklık için telefonda **Ayarlar → Ekran → Gelişmiş materyal** açık olmalı. Kapalıysa ya da pil tasarrufu bulanıklığı kapatırsa ada eskisi gibi boyanmış camla görünür.
+
 ## [1.7.1] — 2026-11-04
 
 - ⏰ **Alarm saati düzeltildi**: Xiaomi Saat sisteme alarmı 1 saat kayık bildirdiğinde ada yanlış saat gösteriyordu (07:40 yerine 06:40). Ada artık Saat uygulamasının yazdığı “Alarm … içinde” süresinden gerçek saati öğreniyor ve kaymayı kalıcı olarak düzeltiyor.

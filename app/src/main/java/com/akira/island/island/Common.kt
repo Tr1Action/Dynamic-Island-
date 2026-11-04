@@ -373,6 +373,9 @@ fun PillButton(
  *  - тонкая цветная дисперсия по краю (голубая и розовая каймы);
  *  - блики живут: при наклоне телефона ([tilt] от −1 до 1) они сдвигаются, а при смене содержимого
  *    по стеклу пробегает световая полоса ([sheen] от 0 до 1, иначе скрыта).
+ *
+ * [reveal] (0…1) — насколько остров стал стеклом: 0 — сплошная заливка [base] (свёрнутый остров
+ * остаётся чёрным, как на iPhone), 1 — полное стекло. Переход плавный, вместе с раскрытием.
  */
 fun Modifier.glassSurface(
     shape: Shape,
@@ -380,6 +383,7 @@ fun Modifier.glassSurface(
     opacity: Float,
     tilt: () -> Float = { 0f },
     sheen: () -> Float = { -1f },
+    reveal: () -> Float = { 1f },
 ): Modifier = drawWithCache {
     val w = size.width
     val h = size.height
@@ -401,11 +405,18 @@ fun Modifier.glassSurface(
 
     onDrawWithContent {
         val t = tilt().coerceIn(-1f, 1f)
+        val r = reveal().coerceIn(0f, 1f)
+        if (r <= 0.001f) {
+            // Свёрнутый остров — сплошной, без бликов
+            drawRect(base.copy(alpha = 1f))
+            drawContent()
+            return@onDrawWithContent
+        }
 
-        // Тело стекла
-        drawRect(base.copy(alpha = a * 0.8f))
-        drawRect(veil)
-        drawRect(shade)
+        // Тело стекла: из сплошной заливки плавно становится полупрозрачным
+        drawRect(base.copy(alpha = 1f + (a * 0.8f - 1f) * r))
+        drawRect(veil, alpha = r)
+        drawRect(shade, alpha = r)
 
         // Свет сверху и каустика у противоположного края
         drawRect(
@@ -414,6 +425,7 @@ fun Modifier.glassSurface(
                 center = Offset(w * (0.22f + 0.30f * t), 0f),
                 radius = w * 0.55f,
             ),
+            alpha = r,
         )
         drawRect(
             Brush.radialGradient(
@@ -421,6 +433,7 @@ fun Modifier.glassSurface(
                 center = Offset(w * (0.80f + 0.15f * t), h),
                 radius = w * 0.45f,
             ),
+            alpha = r,
         )
 
         // Бегущий блик при смене содержимого
@@ -435,11 +448,12 @@ fun Modifier.glassSurface(
                     start = Offset(x - w * 0.25f, 0f),
                     end = Offset(x + w * 0.25f, h * 0.6f),
                 ),
+                alpha = r,
             )
         }
 
         // Свечение вдоль кромки: полоски убывающей яркости складываются в плавный спад внутрь
-        for (stroke in glow) drawOutline(outline, glowColor, style = stroke)
+        for (stroke in glow) drawOutline(outline, glowColor, alpha = r, style = stroke)
 
         drawContent()
 
@@ -454,11 +468,11 @@ fun Modifier.glassSurface(
             start = Offset(-shift, 0f),
             end = Offset(w - shift, h),
         )
-        drawOutline(outline, rim, alpha = 0.35f, style = wideRim)
-        drawOutline(outline, rim, style = thinRim)
+        drawOutline(outline, rim, alpha = 0.35f * r, style = wideRim)
+        drawOutline(outline, rim, alpha = r, style = thinRim)
         // Дисперсия: свет раскладывается на цвета по краям
-        translate(-dp, -dp) { drawOutline(outline, Color(0xFF7DF9FF).copy(alpha = 0.20f), style = fringe) }
-        translate(dp, dp) { drawOutline(outline, Color(0xFFFF8AD8).copy(alpha = 0.18f), style = fringe) }
+        translate(-dp, -dp) { drawOutline(outline, Color(0xFF7DF9FF).copy(alpha = 0.20f), alpha = r, style = fringe) }
+        translate(dp, dp) { drawOutline(outline, Color(0xFFFF8AD8).copy(alpha = 0.18f), alpha = r, style = fringe) }
     }
 }
 

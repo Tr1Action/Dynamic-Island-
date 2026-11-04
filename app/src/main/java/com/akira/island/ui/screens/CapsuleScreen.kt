@@ -11,6 +11,7 @@ import androidx.compose.material.icons.rounded.BlurCircular
 import androidx.compose.material.icons.rounded.BlurOn
 import androidx.compose.material.icons.rounded.BubbleChart
 import androidx.compose.material.icons.rounded.Contactless
+import androidx.compose.material.icons.rounded.Contrast
 import androidx.compose.material.icons.rounded.Flare
 import androidx.compose.material.icons.rounded.FormatColorFill
 import androidx.compose.material.icons.rounded.GraphicEq
@@ -86,6 +87,18 @@ fun CapsuleScreen(open: (Screen) -> Unit) {
                 s.liquidGlass, color = Tile.Teal, badge = tr("Экспериментальный", "Experimental"),
             ) { v -> SettingsRepo.update { copy(liquidGlass = v) } }
             if (s.liquidGlass) {
+                GroupToggle(
+                    Pos.Middle, Icons.Rounded.BlurOn, tr("Настоящее размытие", "Real blur"),
+                    tr("Стекло размывает экран под собой, как шторка HyperOS 3. Нужны «Расширенные материалы» в настройках экрана",
+                        "The glass blurs the screen under it, like the HyperOS 3 control center. Needs advanced materials in display settings"),
+                    s.glassBlur, color = Tile.Blue, badge = tr("Новое", "New"),
+                ) { v -> SettingsRepo.update { copy(glassBlur = v) } }
+                GroupToggle(
+                    Pos.Middle, Icons.Rounded.Contrast, tr("Чёрный в покое", "Black when collapsed"),
+                    tr("Свёрнутый остров остаётся чёрным и прячет камеру, стеклом становится раскрытый",
+                        "The collapsed island stays black and hides the camera; it turns to glass when expanded"),
+                    s.glassCompactSolid, color = Tile.Indigo,
+                ) { v -> SettingsRepo.update { copy(glassCompactSolid = v) } }
                 GroupSlider(
                     Pos.Last, Icons.Rounded.Opacity, tr("Плотность стекла", "Glass density"),
                     value = s.glassOpacity.toFloat(), range = 40f..95f, label = "${s.glassOpacity}%", color = Tile.Teal,

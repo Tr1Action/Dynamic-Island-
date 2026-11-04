@@ -6,6 +6,12 @@ Versioning: the second number (1.5, 1.6…) means new and changed features, the 
 
 > Since 1.6.1 the app and the island speak English (Features → General → Language). Earlier versions were in Russian only, so older entries give the Russian label in brackets.
 
+## [1.8.0] — 2026-11-04
+
+- 🫧 **Real Liquid Glass**: the expanded island now really blurs the screen behind it — the same system blur as the HyperOS 3 control center and notification shade. The blur follows the island's expansion and corners frame by frame (Appearance → Color and glass → **Real blur**).
+- ⚫ **Black when collapsed**: the collapsed island stays black and hides the camera; it smoothly turns to glass when expanded. Turn it off to keep the island glass all the time.
+- ℹ️ The blur needs **Settings → Display → Advanced materials** on. Without it, or when battery saver turns blur off, the island falls back to the painted glass.
+
 ## [1.7.1] — 2026-11-04
 
 - ⏰ **Alarm time fix**: when Xiaomi Clock reports the next alarm an hour off, the island learns the real time from Clock's “Alarm in …” text and corrects it.

@@ -200,6 +200,10 @@ data class IslandSettings(
     // Liquid Glass: полупрозрачное стекло с бликами вместо чёрной заливки. По умолчанию выключено
     val liquidGlass: Boolean = false,
     val glassOpacity: Int = 68,
+    /** Gerçek bulanıklık: cam, arkasındaki ekranı HyperOS 3 kontrol merkezi gibi bulanıklaştırır */
+    val glassBlur: Boolean = true,
+    /** Kapalıyken siyah: küçük ada siyah kalır, cama yalnızca açılınca dönüşür (kamera deliği görünmez) */
+    val glassCompactSolid: Boolean = true,
 
     // Анимации
     val expandStyle: ExpandStyle = ExpandStyle.FRUIT,
