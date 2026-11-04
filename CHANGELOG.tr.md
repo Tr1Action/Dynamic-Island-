@@ -4,6 +4,10 @@
 
 Dinamik Ada, [Akira9021/Dynamic-Island-](https://github.com/Akira9021/Dynamic-Island-) projesinin Türkçe sürümüdür. Eski sürümlerin notları için İngilizce değişiklik günlüğüne bakın.
 
+## [1.7.1] — 2026-11-04
+
+- ⏰ **Alarm saati düzeltildi**: Xiaomi Saat sisteme alarmı 1 saat kayık bildirdiğinde ada yanlış saat gösteriyordu (07:40 yerine 06:40). Ada artık Saat uygulamasının yazdığı “Alarm … içinde” süresinden gerçek saati öğreniyor ve kaymayı kalıcı olarak düzeltiyor.
+
 ## [1.7.0] — 2026-11-04
 
 - 🇹🇷 **Türkçe dil desteği**: uygulama ve ada tamamen Türkçe (Özellikler → Genel → Dil). Yeni kurulumda varsayılan dil Türkçe; “Sistem varsayılanı” telefon Türkçeyse Türkçe seçer.

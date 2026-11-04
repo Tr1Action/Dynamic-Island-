@@ -13,8 +13,8 @@ android {
         applicationId = "com.tr1action.island"
         minSdk = 26
         targetSdk = 35
-        versionCode = 13
-        versionName = "1.7.0"
+        versionCode = 14
+        versionName = "1.7.1"
     }
 
     // Ключ подписи в репозитории не хранится: релизный APK собирается без подписи,

@@ -1,12 +1,6 @@
-### 🇹🇷 Türkçe
-- Uygulama ve ada artık Türkçe: Özellikler → Genel → Dil. Yeni kurulumda varsayılan dil Türkçe.
-- Tarihler, süreler (dk, sa) ve navigasyon birimleri Türkçe.
+### ⏰ Alarm saati düzeltildi
+- Xiaomi Saat sisteme alarmı 1 saat kayık bildirdiğinde ada yanlış saat gösteriyordu. Saat uygulamasını bir kez açın: ada “Alarm … içinde” yazısından gerçek saati öğrenir ve kaymayı bundan sonra kendisi düzeltir.
 
-### 🧭 Türkçe ekranları tanıma
-- Saat uygulaması: Zamanlayıcı, Kronometre, Başlat, Duraklat, Sıfırla düğmeleri tanınıyor.
-- Navigasyon: “Sola dönün”, “Sağa dönün”, “Düz devam edin”, dk/sa süreleri.
-- Ödeme: Türk ve Fransız bankalarının ödeme ekranları ve SMS'leri.
-
-### 🏝️ Kendi uygulamamız
-- Ad: Dinamik Ada. Güncellemeler artık Tr1Action/Dynamic-Island- deposundan geliyor.
-- Orijinal uygulamayla yan yana kurulabilir — orijinali kaldırabilirsiniz.
+### 🇹🇷 Türkçe (1.7.0)
+- Uygulama ve ada Türkçe; Türkçe tarih, süre ve navigasyon birimleri.
+- Saat, navigasyon ve banka ekranlarındaki Türkçe yazılar tanınıyor.
