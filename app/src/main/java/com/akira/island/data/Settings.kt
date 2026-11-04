@@ -202,6 +202,8 @@ data class IslandSettings(
     val glassOpacity: Int = 68,
     /** Gerçek bulanıklık: cam, arkasındaki ekranı HyperOS 3 kontrol merkezi gibi bulanıklaştırır */
     val glassBlur: Boolean = true,
+    /** Bulanıklık gücü, % (0 — hafif, 100 — HyperOS kontrol merkezi gibi tamamen buzlu) */
+    val glassBlurStrength: Int = 70,
     /** Kapalıyken siyah: küçük ada siyah kalır, cama yalnızca açılınca dönüşür (kamera deliği görünmez) */
     val glassCompactSolid: Boolean = true,
 
