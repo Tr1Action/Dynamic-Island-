@@ -1,5 +1,6 @@
 package com.akira.island.island
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -79,6 +80,8 @@ internal class BlurBackdropView(context: Context) : View(context) {
         super.onDetachedFromWindow()
     }
 
+    // Erişim HiddenApiBypass ile açılıyor (CrossBlur.prepare), bu yüzden lint'in yasağı burada geçerli değil
+    @SuppressLint("BlockedPrivateApi", "SoonBlockedPrivateApi", "DiscouragedPrivateApi", "PrivateApi")
     private fun attach() {
         if (blur != null || !CrossBlur.prepare()) return
         runCatching {
