@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.view.View
 import android.view.WindowManager
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -94,7 +95,7 @@ internal class BlurBackdropView(context: Context) : View(context) {
             runCatching { c.getMethod("setColor", Int::class.javaPrimitiveType).invoke(d, 0) }
             blur = d
             background = d
-            apply()
+            push()
         }.onFailure {
             blur = null
             background = null
@@ -109,10 +110,10 @@ internal class BlurBackdropView(context: Context) : View(context) {
         corners[1] = tr
         corners[2] = bl
         corners[3] = br
-        apply()
+        push()
     }
 
-    private fun apply() {
+    private fun push() {
         val d = blur ?: return
         runCatching {
             setRadius?.invoke(d, radius)
@@ -136,20 +137,24 @@ internal class BlurBackdropView(context: Context) : View(context) {
 fun rememberCrossWindowBlur(): Boolean {
     val context = LocalContext.current
     var enabled by remember { mutableStateOf(false) }
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        DisposableEffect(context) {
-            val wm = context.getSystemService(WindowManager::class.java)
-            if (wm == null) {
-                onDispose { }
-            } else {
-                enabled = runCatching { wm.isCrossWindowBlurEnabled }.getOrDefault(false)
-                val listener = java.util.function.Consumer<Boolean> { enabled = it }
-                runCatching { wm.addCrossWindowBlurEnabledListener(context.mainExecutor, listener) }
-                onDispose { runCatching { wm.removeCrossWindowBlurEnabledListener(listener) } }
-            }
-        }
+    DisposableEffect(context) {
+        val stop = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) watchCrossBlur(context) { enabled = it } else null
+        onDispose { stop?.invoke() }
     }
     return enabled
+}
+
+/** Bulanıklığın açık olup olmadığını izler; dönen işlev izlemeyi bırakır. */
+@RequiresApi(Build.VERSION_CODES.S)
+private fun watchCrossBlur(context: Context, onChange: (Boolean) -> Unit): (() -> Unit)? {
+    val wm = context.getSystemService(WindowManager::class.java) ?: return null
+    onChange(runCatching { wm.isCrossWindowBlurEnabled }.getOrDefault(false))
+    val listener = java.util.function.Consumer<Boolean> { onChange(it) }
+    return runCatching {
+        wm.addCrossWindowBlurEnabledListener(context.mainExecutor, listener)
+        val stop: () -> Unit = { runCatching { wm.removeCrossWindowBlurEnabledListener(listener) } }
+        stop
+    }.getOrNull()
 }
 
 /**
