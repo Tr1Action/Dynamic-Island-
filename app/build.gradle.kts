@@ -13,8 +13,8 @@ android {
         applicationId = "com.tr1action.island"
         minSdk = 26
         targetSdk = 35
-        versionCode = 14
-        versionName = "1.7.1"
+        versionCode = 15
+        versionName = "1.8.0"
     }
 
     // Ключ подписи в репозитории не хранится: релизный APK собирается без подписи,
@@ -51,6 +51,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
     implementation("androidx.savedstate:savedstate-ktx:1.2.1")
     implementation("androidx.palette:palette-ktx:1.0.0")
+    // Gizli BackgroundBlurDrawable API'sine erişim: adanın arkasını gerçekten bulanıklaştırmak için
+    implementation("org.lsposed.hiddenapibypass:hiddenapibypass:6.1")
 
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")

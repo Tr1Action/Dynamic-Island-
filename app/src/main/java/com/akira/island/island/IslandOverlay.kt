@@ -85,6 +85,7 @@ import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.layout
@@ -120,6 +121,9 @@ private val WidthDemo = com.akira.island.core.LiveInfo(
 
 /** Цвет острова на экране «Размер и положение»: его нужно спрятать под вырезом камеры. */
 val CalibrationRed = Color(0xFFFF6B6B)
+
+/** Радиус настоящего размытия под раскрытым стеклом. */
+private const val GLASS_BLUR_DP = 24
 
 /** Запас вокруг острова в окне: под тень, «желе» и пузырь. */
 const val ISLAND_PAD_DP = 12
@@ -515,6 +519,17 @@ private fun IslandBody(
         for (x in floatArrayOf(-8f, 7f, -5f, 3.5f, -2f, 0f)) shake.animateTo(x, tween(60))
     }
 
+    // Стекло: свёрнутый остров может оставаться чёрным («Kapalıyken siyah»), раскрытый плавно становится
+    // стеклом, а с «Gerçek bulanıklık» ещё и размывает экран под собой, как шторка HyperOS 3
+    val glassOn = s.liquidGlass && !calibrating
+    val glassReveal = animateFloatAsState(
+        if (glassOn && (expanded || !s.glassCompactSolid)) 1f else 0f,
+        tween(380, easing = FastOutSlowInEasing),
+        label = "glassReveal",
+    )
+    val crossBlur = rememberCrossWindowBlur()
+    val realBlur = glassOn && s.glassBlur && !s.reduceEffects && crossBlur
+
     val current by rememberUpdatedState(primary)
     val isExpanded by rememberUpdatedState(expanded)
     val settings by rememberUpdatedState(s)
@@ -546,8 +561,11 @@ private fun IslandBody(
                 }
             }
             .then(
-                if (s.liquidGlass && !calibrating) {
-                    Modifier.glassSurface(shape, Color(s.color), s.glassOpacity / 100f, tilt = { tilt.value }) { sheen.value }
+                if (glassOn) {
+                    Modifier.glassSurface(
+                        shape, Color(s.color), s.glassOpacity / 100f,
+                        tilt = { tilt.value }, sheen = { sheen.value }, reveal = { glassReveal.value },
+                    )
                 } else {
                     Modifier.background(if (calibrating) CalibrationRed else Color(s.color))
                 },
@@ -657,6 +675,19 @@ private fun IslandBody(
                 )
             },
     ) {
+        // Настоящее размытие под стеклом: слой по форме острова, под содержимым (касания идут кнопкам).
+        // Сам он ничего не рисует — размывает SurfaceFlinger под окном. Слой есть, пока размытие включено
+        // в настройках; если система его выключила (экономия заряда), радиус просто 0 — состояние не сбивается
+        if (glassOn && s.glassBlur) {
+            val density = LocalDensity.current
+            val blurPx = with(density) { GLASS_BLUR_DP.dp.toPx() }
+            BlurBackdrop(
+                Modifier.matchParentSize(),
+                radiusPx = { if (realBlur) blurPx * glassReveal.value else 0f },
+                cornerPx = { with(density) { corner.value.toPx() } },
+                notch = s.notch,
+            )
+        }
         // Смена содержимого: с «Жидким раскрытием» новое вырастает из прежнего вместе с формой острова,
         // без него — прежнее перетекание. Форма в обоих случаях меняется пружиной из «Раскрытия острова»
         val widths = remember { HashMap<String, Int>() }

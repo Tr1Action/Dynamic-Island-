@@ -7,3 +7,7 @@
 -keepclasseswithmembers class com.akira.island.data.** {
     kotlinx.serialization.KSerializer serializer(...);
 }
+
+# Gizli API köprüsü (gerçek bulanıklık)
+-keep class org.lsposed.hiddenapibypass.** { *; }
+-dontwarn org.lsposed.hiddenapibypass.**

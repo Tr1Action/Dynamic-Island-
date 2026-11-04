@@ -512,7 +512,7 @@ fun IslandPreview(expanded: Boolean = false) {
                 .then(if (!expanded && s.fxGlow && !s.reduceEffects) Modifier.drawBehind { islandGlow(demo.accent, 1f, corner.toPx(), s.notch) } else Modifier)
                 .clip(shape)
                 .then(
-                    if (s.liquidGlass) Modifier.glassSurface(shape, Color(s.color), s.glassOpacity / 100f)
+                    if (s.liquidGlass) Modifier.glassSurface(shape, Color(s.color), s.glassOpacity / 100f, reveal = { if (s.glassCompactSolid) 0f else 1f })
                     else Modifier.background(Color(s.color)),
                 )
                 .then(if (s.outline) Modifier.border(s.outlineWidth.dp, if (s.outlineFromArt) Tints.Lavender else Color(s.outlineColor), shape) else Modifier)
