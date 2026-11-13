@@ -326,6 +326,7 @@ private fun PreviewTile(title: String, accent: Color, modifier: Modifier) {
 
 private val QuickAction.settingsIcon: ImageVector
     get() = when (this) {
+        QuickAction.SILENT -> Icons.Rounded.NotificationsOff
         QuickAction.TIMER -> Icons.Rounded.HourglassBottom
         QuickAction.STOPWATCH -> Icons.Rounded.Timer
         QuickAction.FLASHLIGHT -> Icons.Rounded.FlashlightOn
@@ -337,6 +338,8 @@ private val QuickAction.settingsIcon: ImageVector
 /** Подпись к кнопке — только там, где непонятно по названию */
 private val QuickAction.hint: String?
     get() = when (this) {
+        QuickAction.SILENT -> tr("Звонок ↔ без звука. Нужен доступ к «Не беспокоить»",
+            "Ring ↔ silent. Needs Do Not Disturb access")
         QuickAction.SCREENSHOT -> tr("Остров на миг прячется — на снимке его нет (Android 9+)",
             "The island hides for a moment, so it's not in the shot (Android 9+)")
         QuickAction.LOCK -> tr("Гасит экран, как кнопка питания (Android 9+)", "Turns the screen off like the power button (Android 9+)")

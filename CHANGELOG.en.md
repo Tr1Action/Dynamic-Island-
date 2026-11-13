@@ -6,6 +6,10 @@ Versioning: the second number (1.5, 1.6…) means new and changed features, the 
 
 > Since 1.6.1 the app and the island speak English (Features → General → Language). Earlier versions were in Russian only, so older entries give the Russian label in brackets.
 
+## [1.8.3] — 2026-11-13
+
+- 🔕 **Silent button**: tapping the empty island now shows a **Ring / Silent** button instead of the timer. Tap to switch ring ↔ silent; the button shows the current mode (Ring, Vibrate, Silent in red). Asks for Do Not Disturb access the first time. Want the timer back? Behavior → Tapping the empty island.
+
 ## [1.8.2] — 2026-11-04
 
 - ⚫ **Black when collapsed, fixed**: with real blur on, the collapsed island looked transparent instead of black. The system blur layer wipes whatever is drawn under it; the glass body is now drawn on top of it, so the collapsed island is black again and the expanded glass keeps its tint and highlights.

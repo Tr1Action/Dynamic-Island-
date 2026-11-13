@@ -201,6 +201,29 @@ object Controls {
         IslandBus.commands.tryEmit(ServiceCommand.TURN_OFF)
     }
 
+    /**
+     * Звонок ↔ без звука. Из вибрации тоже возвращает звонок. Включить «без звука» Android даёт только
+     * с доступом к «Не беспокоить» — нет доступа: ставим вибрацию и открываем экран, где его дают.
+     */
+    fun toggleSilent(context: Context) {
+        val audio = context.getSystemService(android.media.AudioManager::class.java) ?: return
+        val nm = context.getSystemService(android.app.NotificationManager::class.java)
+        if (audio.ringerMode != android.media.AudioManager.RINGER_MODE_NORMAL) {
+            runCatching { audio.ringerMode = android.media.AudioManager.RINGER_MODE_NORMAL }
+            return
+        }
+        val allowed = nm?.isNotificationPolicyAccessGranted == true
+        val silent = allowed && runCatching { audio.ringerMode = android.media.AudioManager.RINGER_MODE_SILENT }.isSuccess
+        if (silent) return
+        runCatching { audio.ringerMode = android.media.AudioManager.RINGER_MODE_VIBRATE }
+        if (!allowed) {
+            collapse()
+            runCatching {
+                context.startActivity(Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+            }
+        }
+    }
+
     fun openCamera(context: Context) {
         runCatching {
             context.startActivity(Intent(android.provider.MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))

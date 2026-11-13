@@ -87,6 +87,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.vectorResource
 import com.akira.island.core.BatteryInfo
 import com.akira.island.core.CallInfo
 import com.akira.island.core.ChronoInfo
@@ -742,16 +743,54 @@ private fun IdleExpanded(s: IslandSettings, battery: BatteryInfo) {
             // Остальные кнопки — по две в ряд, в порядке из настроек
             actions.filter { it != QuickAction.TIMER }.chunked(2).forEach { row ->
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                    row.forEach { QuickButton(it, context, Modifier.weight(1f)) }
+                    row.forEach {
+                        if (it == QuickAction.SILENT) SilentButton(context, Modifier.weight(1f))
+                        else QuickButton(it, context, Modifier.weight(1f))
+                    }
                 }
             }
         }
     }
 }
 
+/** Звонок / вибрация / без звука — кнопка показывает, что сейчас, и переключает звонок ↔ без звука. */
+@Composable
+private fun SilentButton(context: Context, modifier: Modifier) {
+    val audio = remember { context.getSystemService(android.media.AudioManager::class.java) }
+    var mode by remember { mutableStateOf(audio?.ringerMode ?: android.media.AudioManager.RINGER_MODE_NORMAL) }
+    androidx.compose.runtime.DisposableEffect(Unit) {
+        val receiver = object : android.content.BroadcastReceiver() {
+            override fun onReceive(c: Context, i: android.content.Intent) {
+                mode = audio?.ringerMode ?: mode
+            }
+        }
+        androidx.core.content.ContextCompat.registerReceiver(
+            context, receiver, android.content.IntentFilter(android.media.AudioManager.RINGER_MODE_CHANGED_ACTION),
+            androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED,
+        )
+        onDispose { runCatching { context.unregisterReceiver(receiver) } }
+    }
+    val (icon, label, bg, fg) = when (mode) {
+        android.media.AudioManager.RINGER_MODE_SILENT ->
+            Quad(androidx.compose.ui.graphics.vector.ImageVector.vectorResource(com.akira.island.R.drawable.ios_notifications_off),
+                tr("Без звука", "Silent"), Tints.Red, Color.White)
+        android.media.AudioManager.RINGER_MODE_VIBRATE ->
+            Quad(androidx.compose.ui.graphics.vector.ImageVector.vectorResource(com.akira.island.R.drawable.ios_phone_portrait),
+                tr("Вибрация", "Vibrate"), Tints.Purple, Color.White)
+        else -> Quad(Ios.bell, tr("Звонок", "Ring"), Color.White.copy(alpha = 0.14f), Color.White)
+    }
+    PillButton(icon, label, modifier, bg = bg, fg = fg) {
+        Controls.toggleSilent(context)
+        mode = audio?.ringerMode ?: mode
+    }
+}
+
+private data class Quad<A, B, C, D>(val a: A, val b: B, val c: C, val d: D)
+
 @Composable
 private fun QuickButton(a: QuickAction, context: Context, modifier: Modifier) {
     val icon = when (a) {
+        QuickAction.SILENT -> Ios.bell
         QuickAction.STOPWATCH -> Ios.stopwatch
         QuickAction.FLASHLIGHT -> Ios.flashlight
         QuickAction.SCREENSHOT -> Icons.Rounded.Screenshot
@@ -779,6 +818,7 @@ private fun QuickButton(a: QuickAction, context: Context, modifier: Modifier) {
                 Controls.lockScreen()
             }
             QuickAction.TIMER -> Controls.startTimer(SettingsRepo.current.timerMinutes)
+            QuickAction.SILENT -> Controls.toggleSilent(context)
         }
     }
 }

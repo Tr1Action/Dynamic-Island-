@@ -60,6 +60,7 @@ enum class TapAction(private val ru: String, private val en: String) {
 /** Кнопки раскрытого пустого острова. Подпись на кнопке короче, чем в настройках */
 @Serializable
 enum class QuickAction(private val ru: String, private val en: String, private val shortRu: String, private val shortEn: String) {
+    SILENT("Без звука", "Silent mode", "Без звука", "Silent"),
     TIMER("Таймер", "Timer", "Таймер", "Timer"),
     STOPWATCH("Секундомер", "Stopwatch", "Секундомер", "Stopwatch"),
     FLASHLIGHT("Фонарик", "Flashlight", "Фонарик", "Flashlight"),
@@ -263,7 +264,9 @@ data class IslandSettings(
     /** Нажатие на пустой остров раскрывает его: часы, заряд и [quickActions] */
     val idleExpand: Boolean = true,
     /** Кнопки раскрытого пустого острова; пусто — только часы и заряд */
-    val quickActions: List<QuickAction> = listOf(QuickAction.TIMER, QuickAction.STOPWATCH, QuickAction.FLASHLIGHT),
+    val quickActions: List<QuickAction> = listOf(QuickAction.SILENT, QuickAction.STOPWATCH, QuickAction.FLASHLIGHT),
+    /** Кнопка «Без звука» уже ставилась вместо таймера (один раз, при обновлении) */
+    val silentQuickAdded: Boolean = false,
     /** «Не выгружать остров»: служба с тихим уведомлением, чтобы остров не закрывался вместе с недавними */
     val keepAlive: Boolean = false,
     /** Сколько строк текста видно в карточке уведомления */
@@ -316,6 +319,13 @@ object SettingsRepo {
         hadSavedSettings = p.contains(KEY)
         p.getString(KEY, null)?.let { raw ->
             runCatching { json.decodeFromString<IslandSettings>(raw) }.onSuccess { _state.value = it }
+        }
+        // Кнопка «Без звука» встаёт вместо таймера в раскрытом пустом острове — один раз
+        if (!_state.value.silentQuickAdded) update {
+            copy(
+                quickActions = QuickAction.entries.filter { it in quickActions || it == QuickAction.SILENT }.filter { it != QuickAction.TIMER },
+                silentQuickAdded = true,
+            )
         }
         // 1.1 и раньше: размеры по умолчанию были меньше, чем у iPhone — переносим, если их не трогали
         val cur = _state.value
