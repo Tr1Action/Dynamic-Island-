@@ -4,6 +4,10 @@
 
 Dinamik Ada, [Akira9021/Dynamic-Island-](https://github.com/Akira9021/Dynamic-Island-) projesinin Türkçe sürümüdür. Eski sürümlerin notları için İngilizce değişiklik günlüğüne bakın.
 
+## [1.8.3] — 2026-11-13
+
+- 🔕 **Sessiz düğmesi**: boş adaya dokununca zamanlayıcı yerine **Zil / Sessiz** düğmesi çıkıyor. Dokununca zil ↔ sessiz geçer; düğme o anki modu gösterir (Zil, Titreşim, Sessiz — kırmızı). İlk seferde «Rahatsız Etmeyin» erişimi istenir. Zamanlayıcıyı geri isterseniz: Davranış → Boş adaya dokunma.
+
 ## [1.8.2] — 2026-11-04
 
 - ⚫ **Kapalıyken siyah düzeltildi**: gerçek bulanıklık açıkken küçük ada siyah yerine saydam görünüyordu. Sistem bulanıklık katmanı altındaki her şeyi siliyordu; camın gövdesi artık onun üstüne çiziliyor. Küçük ada yine siyah, açılan ada da cam rengini ve parlamalarını doğru gösteriyor.
