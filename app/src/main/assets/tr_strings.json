@@ -400,6 +400,8 @@
   "Screenshot without the island": "Adasız ekran görüntüsü",
   "Nothing": "Hiçbir şey",
   "Silent mode": "Sessiz mod",
+  "No double notifications": "Çift bildirim olmasın",
+  "The app's own pop-up is hidden and the island shows instead. Sound and the shade stay (root)": "Uygulamanın kendi açılır kutusu gizlenir, yerine ada görünür. Ses ve bildirim paneli kalır (root)",
   "Ring ↔ silent. Needs Do Not Disturb access": "Zil ↔ sessiz. «Rahatsız Etmeyin» erişimi gerekir",
   "Stopwatch": "Kronometre",
   "Flashlight": "El feneri",

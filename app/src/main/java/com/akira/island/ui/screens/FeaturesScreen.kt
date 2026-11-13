@@ -258,6 +258,7 @@ private val accentColors = listOf(
 @Composable
 fun NotificationsScreen(onBack: () -> Unit) {
     val s by SettingsRepo.state.collectAsState()
+    val context = LocalContext.current
     var accentDialog by remember { mutableStateOf(false) }
 
     Page(tr("Уведомления", "Notifications"), onBack) {
@@ -273,6 +274,13 @@ fun NotificationsScreen(onBack: () -> Unit) {
                 tr("Показывать и уведомления приложения, которое сейчас на экране", "Also show notifications from the app that's on screen"),
                 s.msgInApp, color = Tile.Teal) { v ->
                 SettingsRepo.update { copy(msgInApp = v) }
+            }
+            GroupToggle(Pos.Middle, Icons.Rounded.NotificationsOff, tr("Без двойных уведомлений", "No double notifications"),
+                tr("Своя всплывающая плашка приложения скрывается, вместо неё остров. Звук и шторка остаются (root)",
+                    "The app's own pop-up is hidden and the island shows instead. Sound and the shade stay (root)"),
+                s.hidePopups, color = Tile.Red) { v ->
+                SettingsRepo.update { copy(hidePopups = v) }
+                if (!v) com.akira.island.service.PopupHider.restoreAll(context)
             }
             GroupSlider(
                 Pos.Last, Icons.Rounded.FormatLineSpacing, tr("Строк текста", "Text lines"),

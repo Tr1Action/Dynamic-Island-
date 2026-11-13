@@ -6,6 +6,11 @@ Versioning: the second number (1.5, 1.6…) means new and changed features, the 
 
 > Since 1.6.1 the app and the island speak English (Features → General → Language). Earlier versions were in Russian only, so older entries give the Russian label in brackets.
 
+## [1.8.4] — 2026-11-13
+
+- 🚫 **No double notifications**: when a message shows in the island, the app's own pop-up is hidden. The notification itself stays: it still rings and stays in the shade (root; Notifications → No double notifications).
+- 🔕 Ring/silent banner off on Xiaomi: HyperOS already shows it in its own island.
+
 ## [1.8.3] — 2026-11-13
 
 - 🔕 **Silent button**: tapping the empty island now shows a **Ring / Silent** button instead of the timer. Tap to switch ring ↔ silent; the button shows the current mode (Ring, Vibrate, Silent in red). Asks for Do Not Disturb access the first time. Want the timer back? Behavior → Tapping the empty island.

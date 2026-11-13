@@ -4,6 +4,11 @@
 
 Dinamik Ada, [Akira9021/Dynamic-Island-](https://github.com/Akira9021/Dynamic-Island-) projesinin Türkçe sürümüdür. Eski sürümlerin notları için İngilizce değişiklik günlüğüne bakın.
 
+## [1.8.4] — 2026-11-13
+
+- 🚫 **Çift bildirim yok**: mesaj adada görününce uygulamanın kendi açılır kutusu artık çıkmıyor. Bildirim kapatılmaz: sesi ve titreşimi çalar, bildirim panelinde kalır (root gerekir; Bildirimler → Çift bildirim olmasın). Her bildirim türünün ilk bildiriminde kutu bir kez daha çıkabilir.
+- 🔕 Xiaomi'de zil/sessiz plakası kapatıldı: HyperOS bunu kendi adasında zaten gösteriyor, ikisi üst üste biniyordu.
+
 ## [1.8.3] — 2026-11-13
 
 - 🔕 **Sessiz düğmesi**: boş adaya dokununca zamanlayıcı yerine **Zil / Sessiz** düğmesi çıkıyor. Dokununca zil ↔ sessiz geçer; düğme o anki modu gösterir (Zil, Titreşim, Sessiz — kırmızı). İlk seferde «Rahatsız Etmeyin» erişimi istenir. Zamanlayıcıyı geri isterseniz: Davranış → Boş adaya dokunma.
