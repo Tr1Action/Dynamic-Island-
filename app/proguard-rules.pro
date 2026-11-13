@@ -11,3 +11,6 @@
 # Gizli API köprüsü (gerçek bulanıklık)
 -keep class org.lsposed.hiddenapibypass.** { *; }
 -dontwarn org.lsposed.hiddenapibypass.**
+
+# Root ile app_process üzerinden çalıştırılır
+-keep class com.akira.island.service.ChannelTool { *; }

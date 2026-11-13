@@ -267,6 +267,10 @@ data class IslandSettings(
     val quickActions: List<QuickAction> = listOf(QuickAction.SILENT, QuickAction.STOPWATCH, QuickAction.FLASHLIGHT),
     /** Кнопка «Без звука» уже ставилась вместо таймера (один раз, при обновлении) */
     val silentQuickAdded: Boolean = false,
+    /** Çift bildirim olmasın: adada gösterilen bildirimin kendi açılır kutusu kapanır (root) */
+    val hidePopups: Boolean = true,
+    /** Xiaomi'de zil modu plakası bir kez kapatıldı: HyperOS kendi adasında zaten gösteriyor */
+    val ringerXiaomiFixed: Boolean = false,
     /** «Не выгружать остров»: служба с тихим уведомлением, чтобы остров не закрывался вместе с недавними */
     val keepAlive: Boolean = false,
     /** Сколько строк текста видно в карточке уведомления */
@@ -326,6 +330,10 @@ object SettingsRepo {
                 quickActions = QuickAction.entries.filter { it in quickActions || it == QuickAction.SILENT }.filter { it != QuickAction.TIMER },
                 silentQuickAdded = true,
             )
+        }
+        // HyperOS zil/sessiz modunu kendi adasında gösteriyor — bizimki üstüne binmesin
+        if (!_state.value.ringerXiaomiFixed) update {
+            copy(evRinger = if (android.os.Build.MANUFACTURER.equals("xiaomi", true)) false else evRinger, ringerXiaomiFixed = true)
         }
         // 1.1 и раньше: размеры по умолчанию были меньше, чем у iPhone — переносим, если их не трогали
         val cur = _state.value
