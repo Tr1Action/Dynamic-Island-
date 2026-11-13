@@ -161,7 +161,10 @@ object Messages {
         // «История уведомлений»: после плашки сообщение ждёт в острове
         if (s.historyMinutes != 0) Inbox.add(message, title.ifEmpty { appName })
         // Для «Системных плашек»: какой мессенджер и всплывает ли у него ещё своя плашка поверх острова
-        SystemBanners.onMessage(sbn.packageName, n.channelId, popsUp = !ranked || ranking.importance >= NotificationManager.IMPORTANCE_HIGH)
+        val popsUp = !ranked || ranking.importance >= NotificationManager.IMPORTANCE_HIGH
+        SystemBanners.onMessage(sbn.packageName, n.channelId, popsUp = popsUp)
+        // Uygulamanın kendi açılır kutusu da çıkıyor — onu kapat (ses ve panel kalır, root)
+        if (popsUp) PopupHider.onShown(service, sbn)
     }
 
     /**

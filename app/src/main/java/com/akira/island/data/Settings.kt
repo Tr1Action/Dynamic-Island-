@@ -364,6 +364,8 @@ data class IslandSettings(
     val quickActions: List<QuickAction> = listOf(QuickAction.SILENT, QuickAction.STOPWATCH, QuickAction.FLASHLIGHT),
     /** Кнопка «Без звука» уже ставилась вместо таймера (один раз, при обновлении) */
     val silentQuickAdded: Boolean = false,
+    /** Çift bildirim olmasın: adada gösterilen bildirimin kendi açılır kutusu kapanır (root) */
+    val hidePopups: Boolean = true,
     /** Xiaomi'de zil modu plakası bir kez kapatıldı: HyperOS kendi adasında zaten gösteriyor */
     val ringerXiaomiFixed: Boolean = false,
     /** «Не выгружать остров»: служба с тихим уведомлением, чтобы остров не закрывался вместе с недавними */

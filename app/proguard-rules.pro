@@ -7,3 +7,6 @@
 -keepclasseswithmembers class com.akira.island.data.** {
     kotlinx.serialization.KSerializer serializer(...);
 }
+
+# Root ile app_process üzerinden çalıştırılır
+-keep class com.akira.island.service.ChannelTool { *; }
