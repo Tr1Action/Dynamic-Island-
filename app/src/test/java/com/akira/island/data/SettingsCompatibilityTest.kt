@@ -26,6 +26,19 @@ class SettingsCompatibilityTest {
         assertFalse(settings.swipeActivities)
     }
 
+    @Test fun dinamikAda184SettingsSurviveUpdate() {
+        val previous = """{"language":"TR","quickActions":["SILENT","STOPWATCH","FLASHLIGHT"],"silentQuickAdded":true,""" +
+            """"liquidGlass":true,"glassBlur":true,"glassBlurStrength":70,"glassCompactSolid":true,"hidePopups":true,"ringerXiaomiFixed":true,"evRinger":false}"""
+        val settings = json.decodeFromString<IslandSettings>(previous)
+        assertEquals(AppLanguage.TR, settings.language)
+        assertEquals(listOf(QuickAction.SILENT, QuickAction.STOPWATCH, QuickAction.FLASHLIGHT), settings.quickActions)
+        assertTrue(settings.liquidGlass)
+        assertTrue(settings.glassCompactSolid)
+        assertEquals(70, settings.glassBlurStrength)
+        assertTrue(settings.hidePopups)
+        assertFalse(settings.evRinger)
+    }
+
     @Test fun newAppearanceAndLanguagesSurviveRestart() {
         val before = IslandSettings(
             language = AppLanguage.FR,
