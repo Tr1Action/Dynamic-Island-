@@ -353,7 +353,7 @@ private val accentColors = listOf(
 @Composable
 fun NotificationsScreen(onBack: () -> Unit, open: (Screen) -> Unit) {
     val s by SettingsRepo.state.collectAsState()
-    val context = LocalContext.current
+    val context = androidx.compose.ui.platform.LocalContext.current
     var accentDialog by remember { mutableStateOf(false) }
     var styleDialog by remember { mutableStateOf(false) }
     var timeDialog by remember { mutableStateOf(false) }
