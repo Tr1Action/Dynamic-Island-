@@ -6,6 +6,10 @@ Versioning: the second number (1.5, 1.6…) means new and changed features, the 
 
 > Since 1.6.1 the app and the island speak English (Features → General → Language). Earlier versions were in Russian only, so older entries give the Russian label in brackets.
 
+## [1.9.0] — 2026-11-21 · Dinamik Ada (Tr1Action)
+
+- Rebased on upstream 1.7.2. Turkish moved to `assets/i18n/tr.json`; kept Black when collapsed, Ring/Silent button, No double notifications and the Xiaomi alarm fix.
+
 ## [1.7.2] — 2026-11-15
 
 ### 🛠 Fixes

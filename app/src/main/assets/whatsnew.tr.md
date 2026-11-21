@@ -1,10 +1,15 @@
-### 🫧 Gerçek Liquid Glass
-- Görünüm → Renk ve cam → **Liquid Glass**: ada açılınca arkasındaki ekranı HyperOS 3 kontrol merkezi gibi gerçekten bulanıklaştırır. Küçükken siyah kalır, kamerayı gizler.
-- Ayarlar → Ekran → **Gelişmiş materyal** açık olmalı.
+### 🆕 1.7.2 sürümünün tüm yenilikleri geldi
+- **Şarkı sözleri**: senkron sözler ve karaoke (LRCLIB, NetEase).
+- **Özet**: açılan boş adada saat, adım sayar ve hava durumu sayfaları.
+- **Kısayollar**, ses ve parlaklık denetimleri, arama geçmişi.
+- **Yeni cam**: daha iyi Liquid Glass, bulanıklık gücü ayarı, yansımalar.
+- **Kayıt kartı**: ses, ekran ve video kaydını adadan duraklat/durdur.
+- Bildirim geçmişi, yazı tipi seçimi, ayarlarda arama, erişim noktası kartı ve çok daha fazlası.
 
-### ⏰ Alarm saati düzeltildi
-- Xiaomi Saat sisteme alarmı 1 saat kayık bildirdiğinde ada yanlış saat gösteriyordu. Saat uygulamasını bir kez açın: ada “Alarm … içinde” yazısından gerçek saati öğrenir ve kaymayı bundan sonra kendisi düzeltir.
+### ⚫ Kapalıyken siyah
+- Görünüm → Malzeme ve efektler → Cam → **Kapalıyken siyah**: küçük ada siyah kalır, yalnızca açılınca cama dönüşür.
 
-### 🇹🇷 Türkçe (1.7.0)
-- Uygulama ve ada Türkçe; Türkçe tarih, süre ve navigasyon birimleri.
-- Saat, navigasyon ve banka ekranlarındaki Türkçe yazılar tanınıyor.
+### 🔕 Zil / Sessiz düğmesi
+- Boş adaya dokununca zamanlayıcı yerine tek dokunuşla Zil ↔ Sessiz düğmesi (yeni üç adımlı **Ses modu** da seçilebilir).
+
+### 🚫 Çift bildirim yok ve ⏰ Xiaomi alarm düzeltmesi korundu
