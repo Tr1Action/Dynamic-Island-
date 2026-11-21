@@ -240,6 +240,26 @@ object Controls {
         IslandBus.ringer.value = audio.ringerMode
     }
 
+    /**
+     * Звонок ↔ без звука одним нажатием. Из вибрации тоже возвращает звонок. «Без звука» Android даёт только
+     * с доступом к «Не беспокоить» — нет доступа: ставим вибрацию и открываем экран, где его дают.
+     */
+    fun toggleSilent(context: Context) {
+        val audio = context.getSystemService(AudioManager::class.java) ?: return
+        val nm = context.getSystemService(NotificationManager::class.java)
+        if (audio.ringerMode != AudioManager.RINGER_MODE_NORMAL) {
+            runCatching { audio.ringerMode = AudioManager.RINGER_MODE_NORMAL }
+        } else {
+            val allowed = nm?.isNotificationPolicyAccessGranted == true
+            val silent = allowed && runCatching { audio.ringerMode = AudioManager.RINGER_MODE_SILENT }.isSuccess
+            if (!silent) {
+                runCatching { audio.ringerMode = AudioManager.RINGER_MODE_VIBRATE }
+                if (!allowed) openPolicyAccess(context)
+            }
+        }
+        IslandBus.ringer.value = audio.ringerMode
+    }
+
     /** Кнопка «Не беспокоить»: включить или выключить. Без доступа открывает экран, где его дают. */
     fun toggleDnd(context: Context) {
         val nm = context.getSystemService(NotificationManager::class.java) ?: return

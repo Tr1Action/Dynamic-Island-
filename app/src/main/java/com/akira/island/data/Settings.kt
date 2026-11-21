@@ -70,6 +70,7 @@ enum class QuickAction(private val ru: String, private val en: String, private v
     LOCK("Заблокировать экран", "Lock the screen", "Блокировка", "Lock"),
     RINGER("Режим звука", "Sound mode", "Звук", "Sound"),
     DND("Не беспокоить", "Do Not Disturb", "Не беспокоить", "Do Not Disturb"),
+    SILENT("Без звука", "Silent mode", "Без звука", "Silent"),
     ;
 
     val title: String get() = tr(ru, en)
@@ -360,7 +361,11 @@ data class IslandSettings(
     /** Нажатие на пустой остров раскрывает его: часы, заряд и [quickActions] */
     val idleExpand: Boolean = true,
     /** Кнопки раскрытого пустого острова; пусто — только часы и заряд */
-    val quickActions: List<QuickAction> = listOf(QuickAction.TIMER, QuickAction.STOPWATCH, QuickAction.FLASHLIGHT),
+    val quickActions: List<QuickAction> = listOf(QuickAction.SILENT, QuickAction.STOPWATCH, QuickAction.FLASHLIGHT),
+    /** Кнопка «Без звука» уже ставилась вместо таймера (один раз, при обновлении) */
+    val silentQuickAdded: Boolean = false,
+    /** Xiaomi'de zil modu plakası bir kez kapatıldı: HyperOS kendi adasında zaten gösteriyor */
+    val ringerXiaomiFixed: Boolean = false,
     /** «Не выгружать остров»: служба с тихим уведомлением, чтобы остров не закрывался вместе с недавними */
     val keepAlive: Boolean = false,
     /** Сколько строк текста видно в карточке уведомления */
@@ -544,6 +549,17 @@ object SettingsRepo {
             }
         }
         migrateTo5()
+        // Кнопка «Без звука» встаёт вместо таймера в раскрытом пустом острове — один раз
+        if (!_state.value.silentQuickAdded) update {
+            copy(
+                quickActions = QuickAction.entries.filter { it in quickActions || it == QuickAction.SILENT }.filter { it != QuickAction.TIMER },
+                silentQuickAdded = true,
+            )
+        }
+        // HyperOS zil/sessiz modunu kendi adasında gösteriyor — bizimki üstüne binmesin
+        if (!_state.value.ringerXiaomiFixed) update {
+            copy(evRinger = if (android.os.Build.MANUFACTURER.equals("xiaomi", true)) false else evRinger, ringerXiaomiFixed = true)
+        }
     }
 
     /**

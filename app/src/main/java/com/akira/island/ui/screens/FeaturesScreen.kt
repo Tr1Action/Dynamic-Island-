@@ -479,6 +479,7 @@ private val QuickAction.settingsIcon: ImageVector
         QuickAction.LOCK -> Icons.Rounded.Lock
         QuickAction.RINGER -> Icons.AutoMirrored.Rounded.VolumeUp
         QuickAction.DND -> Icons.Rounded.DoNotDisturbOn
+        QuickAction.SILENT -> Icons.Rounded.NotificationsOff
     }
 
 /** Подпись к кнопке — только там, где непонятно по названию */
@@ -491,6 +492,8 @@ private val QuickAction.hint: String?
             "Ring → vibrate → silent. For Silent, Android asks for Do Not Disturb access")
         QuickAction.DND -> tr("Включает и выключает «Не беспокоить». В первый раз Android попросит доступ",
             "Turns Do Not Disturb on and off. The first time, Android asks for access")
+        QuickAction.SILENT -> tr("Звонок ↔ без звука одним нажатием. Нужен доступ к «Не беспокоить»",
+            "Ring ↔ silent in one tap. Needs Do Not Disturb access")
         else -> null
     }
 

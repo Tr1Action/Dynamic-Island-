@@ -975,7 +975,7 @@ private fun QuickButton(a: QuickAction, context: Context, modifier: Modifier) {
         QuickAction.CAMERA -> Icons.Rounded.PhotoCamera
         QuickAction.LOCK -> Ios.lock
         QuickAction.TIMER -> Ios.timer
-        QuickAction.RINGER -> when (ringer) {
+        QuickAction.RINGER, QuickAction.SILENT -> when (ringer) {
             AudioManager.RINGER_MODE_SILENT -> Ios.bellOff
             AudioManager.RINGER_MODE_VIBRATE -> Ios.vibrate
             else -> Ios.bell
@@ -984,7 +984,7 @@ private fun QuickButton(a: QuickAction, context: Context, modifier: Modifier) {
     }
     // У «Режима звука» подпись — сам режим; «Не беспокоить» горит, пока включено
     val label = when (a) {
-        QuickAction.RINGER -> when (ringer) {
+        QuickAction.RINGER, QuickAction.SILENT -> when (ringer) {
             AudioManager.RINGER_MODE_SILENT -> tr("Без звука", "Silent")
             AudioManager.RINGER_MODE_VIBRATE -> tr("Вибрация", "Vibrate")
             else -> tr("Звонок", "Ring")
@@ -992,7 +992,14 @@ private fun QuickButton(a: QuickAction, context: Context, modifier: Modifier) {
         else -> a.short
     }
     val on = a == QuickAction.DND && dnd
-    PillButton(icon, label, modifier, bg = if (on) Tints.Purple else Color.White.copy(alpha = 0.14f)) {
+    // «Без звука» горит красным, вибрация — сиреневым
+    val bg = when {
+        on -> Tints.Purple
+        a == QuickAction.SILENT && ringer == AudioManager.RINGER_MODE_SILENT -> Tints.Red
+        a == QuickAction.SILENT && ringer == AudioManager.RINGER_MODE_VIBRATE -> Tints.Purple
+        else -> Color.White.copy(alpha = 0.14f)
+    }
+    PillButton(icon, label, modifier, bg = bg) {
         when (a) {
             QuickAction.STOPWATCH -> {
                 Controls.startStopwatch()
@@ -1014,6 +1021,7 @@ private fun QuickButton(a: QuickAction, context: Context, modifier: Modifier) {
             QuickAction.TIMER -> Controls.startTimer(SettingsRepo.current.timerMinutes)
             QuickAction.RINGER -> Controls.cycleRinger(context)
             QuickAction.DND -> Controls.toggleDnd(context)
+            QuickAction.SILENT -> Controls.toggleSilent(context)
         }
     }
 }
