@@ -22,9 +22,11 @@ internal fun backdropAllowed(requested: Boolean, enabled: Boolean, visible: Bool
     requested && enabled && visible && screenOn && !locked && !saving && !reduced && shape
 
 internal fun backdropTransmits(s: com.akira.island.data.IslandSettings, card: Boolean = true): Boolean {
+    // Kapalıyken siyah: küçük adanın arkası bulanıklaşmaz
+    if (!card && s.liquidGlass && s.glassCompactSolid) return false
     val color = if (card && s.expandedColorEnabled) s.expandedColor else s.color
     val alpha = ((color ushr 24) and 255).toFloat() / 255f
-    val density = if (s.liquidGlass) com.akira.island.core.glassBodyDensity(s.glassOpacity / 100f)
+    val density = if (s.liquidGlass && (card || !s.glassCompactSolid)) com.akira.island.core.glassBodyDensity(s.glassOpacity / 100f)
         else s.islandOpacity.coerceIn(20, 100) / 100f
     return alpha * density < 1f
 }

@@ -299,6 +299,8 @@ data class IslandSettings(
     val glassOpacity: Int = 68,
     val glassBlurStrength: Int = 50,
     val backdropBlur: Boolean = false,
+    /** Kapalıyken siyah: küçük ada siyah kalır, cama yalnızca açılınca dönüşür (kamera deliği görünmez) */
+    val glassCompactSolid: Boolean = true,
 
     // Анимации
     val expandStyle: ExpandStyle = ExpandStyle.FRUIT,

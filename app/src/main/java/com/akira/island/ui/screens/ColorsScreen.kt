@@ -152,6 +152,10 @@ fun ColorsScreen(onBack: () -> Unit) {
             SettingsHint(tr("0% — без размытия, 50% — стандартное, 100% — сильное. Меняется фон, текст и кнопки остаются чёткими.",
                 "0%: no blur, 50%: standard, 100%: strong. Only the background changes; text and buttons stay sharp."))
             BlurStrengthPreview(s.glassBlurStrength,blurAvailable && !s.reduceEffects)
+            GroupToggle(Pos.Single, Icons.Rounded.Opacity, tr("Чёрная в свёрнутом виде", "Black when collapsed"),
+                tr("Маленький остров остаётся чёрным и скрывает камеру; стеклом становится только раскрытый.",
+                    "The small island stays black and hides the camera; only the expanded island turns into glass."),
+                s.glassCompactSolid, color = Tile.Gray) { v -> SettingsRepo.update { copy(glassCompactSolid = v) } }
         }
         GroupSlider(Pos.Single, Icons.Rounded.Gradient, tr("Затемнение снизу", "Bottom shading"), s.bottomGradient.toFloat(), 0f..80f, "${s.bottomGradient}%", color = Tile.Indigo) {
             v -> SettingsRepo.update { copy(bottomGradient = v.toInt()) }
