@@ -1,56 +1,101 @@
 package com.akira.island.core
 
+import android.content.Context
 import android.content.res.Resources
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.remember
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.distinctUntilChanged
 import androidx.compose.ui.platform.LocalConfiguration
 import com.akira.island.data.AppLanguage
 import com.akira.island.data.SettingsRepo
+import kotlinx.serialization.builtins.MapSerializer
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.json.Json
 import java.util.Locale
 
 /**
- * Язык приложения и острова: русский или английский. «Как в системе» — русский, если телефон на русском,
- * иначе английский. Строки пишутся парой прямо в коде: tr("Зарядка", "Charging").
+ * Язык приложения и острова. Русский и английский пишутся парой прямо в коде: tr("Зарядка", "Charging").
+ * Остальные языки — таблицы в assets/i18n/<код>.json: английская
+ * строка → перевод. Чего в таблице нет, показывается по-английски. «Как в системе» — язык телефона, если он
+ * есть в приложении, иначе английский.
  */
 object Lang {
-    /** Код языка: "ru", "en" или "tr". «Как в системе» — русский или турецкий, если телефон на нём, иначе английский. */
+    /** Языки приложения: код → таблица переводов (у русского и английского таблиц нет) */
+    val codes = listOf("ru", "en", "tr", "id", "pt", "kk", "fr", "es")
+
+    private var assets: android.content.res.AssetManager? = null
+    private var resources: Resources? = null
+    private val tables = HashMap<String, Map<String, String>>()
+
+    /** Таблицы переводов читаются из assets — зовёт приложение при запуске. */
+    fun init(context: Context) {
+        assets = context.applicationContext.assets
+        resources = context.resources
+    }
+
+    /** Код текущего языка из [codes]. */
     val code: String
-        get() = when (SettingsRepo.current.language) {
-            AppLanguage.EN -> "en"
-            AppLanguage.RU -> "ru"
-            AppLanguage.TR -> "tr"
-            AppLanguage.SYSTEM -> when (systemLanguage()) {
-                "ru" -> "ru"
-                "tr" -> "tr"
-                else -> "en"
-            }
+        get() = when (val l = SettingsRepo.current.language) {
+            AppLanguage.SYSTEM -> systemCode()
+            else -> l.code
         }
 
-    /** Не русский: английский или турецкий (форматы и единицы — не русские) */
+    /** Не русский: подписи, единицы и форматы — как в английском, если у языка нет своих */
     val en: Boolean get() = code != "ru"
 
-    /** Турецкий интерфейс */
-    val turkish: Boolean get() = code == "tr"
-
-    /** Для дат: «пятница, 24 октября», «Friday, October 24» или «4 Kasım Çarşamba» */
+    /** Для дат: «пятница, 24 октября», «Friday, October 24», «Jumat, 24 Oktober» */
     val locale: Locale
         get() = when (code) {
             "ru" -> Locale.forLanguageTag("ru")
             "tr" -> Locale.forLanguageTag("tr")
+            "id" -> Locale.forLanguageTag("id")
+            "pt" -> Locale.forLanguageTag("pt-BR")
+            "kk" -> Locale.forLanguageTag("kk")
+            "fr" -> Locale.FRENCH
+            "es" -> Locale.forLanguageTag("es")
             else -> Locale.ENGLISH
         }
 
-    private fun systemLanguage(): String =
-        runCatching { Resources.getSystem().configuration.locales[0].language }.getOrNull() ?: Locale.getDefault().language
+    private fun systemCode(): String {
+        val lang = runCatching { (resources ?: Resources.getSystem()).configuration.locales[0].language }.getOrNull() ?: Locale.getDefault().language
+        // Индонезийский у старых Android — «in»
+        val c = if (lang == "in") "id" else lang
+        return if (c in codes) c else "en"
+    }
+
+    /** Таблица перевода языка [c]: английская строка → перевод. Пустая, если файла нет. */
+    fun table(c: String): Map<String, String> = synchronized(tables) {
+        tables.getOrPut(c) {
+            runCatching {
+                val raw = assets?.open("i18n/$c.json")?.bufferedReader()?.use { it.readText() } ?: return@runCatching emptyMap()
+                Json.decodeFromString(MapSerializer(String.serializer(), String.serializer()), raw)
+            }.getOrDefault(emptyMap())
+        }
+    }
+
+    /** Строка на текущем языке по паре «русская — английская». */
+    fun pick(ru: String, en: String): String = when (val c = code) {
+        "ru" -> ru
+        "en" -> en
+        else -> table(c)[en] ?: en
+    }
 }
 
 /** Строка на текущем языке. */
-fun tr(ru: String, en: String): String = when (Lang.code) {
-    "ru" -> ru
-    "tr" -> TurkishStrings.of(en)
-    else -> en
+fun tr(ru: String, en: String): String = Lang.pick(ru, en)
+
+/**
+ * Строка с подстановками на текущем языке: tr("Через {0} минут", "In {0} minutes", n). В переводах
+ * {0}, {1}… можно переставлять — значения встанут куда нужно.
+ */
+fun trf(ru: String, en: String, vararg args: Any?): String {
+    var s = Lang.pick(ru, en)
+    args.forEachIndexed { i, a -> s = s.replace("{$i}", a.toString()) }
+    return s
 }
 
 /**
@@ -59,8 +104,8 @@ fun tr(ru: String, en: String): String = when (Lang.code) {
  */
 @Composable
 fun LangScope(content: @Composable () -> Unit) {
-    val s by SettingsRepo.state.collectAsState()
+    val language by remember { SettingsRepo.state.map { it.language }.distinctUntilChanged() }.collectAsState(initial = SettingsRepo.current.language)
     // Язык системы меняется вместе с конфигурацией — чтение подписывает на неё
     LocalConfiguration.current
-    key(s.language, Lang.code) { content() }
+    key(language, Lang.code) { content() }
 }

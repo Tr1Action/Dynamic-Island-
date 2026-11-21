@@ -2,7 +2,14 @@
 
 [🇬🇧 English](CHANGELOG.en.md) · [🇷🇺 Русский](CHANGELOG.md)
 
-Dinamik Ada, [Akira9021/Dynamic-Island-](https://github.com/Akira9021/Dynamic-Island-) projesinin Türkçe sürümüdür. Eski sürümlerin notları için İngilizce değişiklik günlüğüne bakın.
+Dinamik Ada, [Arusaky/Dynamic-Island-](https://github.com/Arusaky/Dynamic-Island-) projesinin Türkçe sürümüdür. Eski sürümlerin notları için İngilizce değişiklik günlüğüne bakın.
+
+## [1.9.0] — 2026-11-21
+
+- 🆕 **Orijinal 1.7.2'nin tüm yenilikleri alındı**: şarkı sözleri ve karaoke, Özet (saat, adımlar, hava durumu), kısayollar, ses/parlaklık denetimleri, yeni Liquid Glass ve bulanıklık gücü, kayıt kartı, bildirim geçmişi, yazı tipi seçimi, ayarlarda arama, erişim noktası kartı ve birçok düzeltme.
+- 🇹🇷 Türkçe yeni dil sistemine taşındı ve 460'tan fazla yeni metin çevrildi.
+- ⚫ Kapalıyken siyah, 🔕 Zil/Sessiz düğmesi, 🚫 çift bildirim yok ve ⏰ Xiaomi alarm düzeltmesi yeni sürümde korundu.
+- Eski bulanıklık ayarı yerine orijinalin yeni sistem bulanıklığı kullanılıyor; ayarlarınız korunur.
 
 ## [1.8.4] — 2026-11-13
 

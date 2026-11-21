@@ -6,37 +6,59 @@ Versioning: the second number (1.5, 1.6…) means new and changed features, the 
 
 > Since 1.6.1 the app and the island speak English (Features → General → Language). Earlier versions were in Russian only, so older entries give the Russian label in brackets.
 
-## [1.8.4] — 2026-11-13
+## [1.9.0] — 2026-11-21 · Dinamik Ada (Tr1Action)
 
-- 🚫 **No double notifications**: when a message shows in the island, the app's own pop-up is hidden. The notification itself stays: it still rings and stays in the shade (root; Notifications → No double notifications).
-- 🔕 Ring/silent banner off on Xiaomi: HyperOS already shows it in its own island.
+- Rebased on upstream 1.7.2. Turkish moved to `assets/i18n/tr.json`; kept Black when collapsed, Ring/Silent button, No double notifications and the Xiaomi alarm fix.
 
-## [1.8.3] — 2026-11-13
+## [1.7.2] — 2026-11-15
 
-- 🔕 **Silent button**: tapping the empty island now shows a **Ring / Silent** button instead of the timer. Tap to switch ring ↔ silent; the button shows the current mode (Ring, Vibrate, Silent in red). Asks for Do Not Disturb access the first time. Want the timer back? Behavior → Tapping the empty island.
+### 🛠 Fixes
+- In-app updates download the APK again: after the repository was renamed, GitHub returns file links with the new owner name, and the address check rejected them. The version and its notes appeared, but the download never started.
 
-## [1.8.2] — 2026-11-04
+## [1.7.1] — 2026-11-15
 
-- ⚫ **Black when collapsed, fixed**: with real blur on, the collapsed island looked transparent instead of black. The system blur layer wipes whatever is drawn under it; the glass body is now drawn on top of it, so the collapsed island is black again and the expanded glass keeps its tint and highlights.
+### 🛠 Fixes
+- Dismiss app notifications right from the island: swiping up on the banner also clears it from the shade, the expanded card can be swiped down or closed with the ✕ button, and tapping outside collapses it.
+- The expanded island (music player and other cards) collapses on swipe up again.
 
-## [1.8.1] — 2026-11-04
+## [1.7.0] — 2026-11-15
 
-- 🌫️ **Blur strength**: a new slider under Appearance → Color and glass. The default blur is stronger (70%): icons and text behind the island turn into frosted glass like the HyperOS control center, so the island's text reads better.
+### ✨ New features
+- 🫧 **Liquid Glass**: refined highlights and transparency, glass density and system blur strength controls. Available for the island, expanded cards and secondary activity on supported devices.
+- 📌 **Pinned apps and contacts**: a compact shortcut row below the date.
+- 🕒 **Brief**: separate compact clock, steps and weather pages, clock styles and extra controls.
+- 🌤 **Weather**: city selection, a standalone card or Brief page, manual refresh and retries after errors.
+- 🎵 **Lyrics**: a continuous soft highlighting wave and smooth line transitions; unsynced lyrics remain scrollable.
+- 🎨 **Custom colors and fonts**: text color, HEX/HSV picker, system or custom fonts, weight and element sizing.
+- 📶 **Hotspot**: persistent state, a settings shortcut and client counts when reliable system information is available.
+- ⬇️ **Transfer speed in expanded download cards**: app-provided details or optional approximate total network rates ↓/↑, preserving actual download percentages.
+- 🔓 **Face ID · face only**: optional verified face-unlock animation using separately configured Shizuku. PIN and fingerprint unlock are not presented as Face ID.
+- ⏰ **Create alarms**, auto-hide the idle island, scroll to top in supported apps and keep cards open on outside touch.
+- 🔋 **Battery**: an icon filled according to the current charge and optional approximate charging-time estimates.
+- 🔔 **Notifications**: history, display styles, duration, silent messages, per-app rules and missing-notification diagnostics.
+- 🌍 **Languages**: Indonesian, Portuguese, Kazakh, French and Spanish; improved language switching.
+- 💜 **Support the developer**: Telegram and Boosty in About, with English and Russian text.
 
-## [1.8.0] — 2026-11-04
+- 🙏 Thanks to **@uswer1106** for helping improve the app.
 
-- 🫧 **Real Liquid Glass**: the expanded island now really blurs the screen behind it — the same system blur as the HyperOS 3 control center and notification shade. The blur follows the island's expansion and corners frame by frame (Appearance → Color and glass → **Real blur**).
-- ⚫ **Black when collapsed**: the collapsed island stays black and hides the camera; it smoothly turns to glass when expanded. Turn it off to keep the island glass all the time.
-- ℹ️ The blur needs **Settings → Display → Advanced materials** on. Without it, or when battery saver turns blur off, the island falls back to the painted glass.
+### 🛠 Fixes and optimization
+- Distinct voice, screen and camera recording states; improved Google Recorder detection, pause/resume and real source controls.
+- Improved lyrics search, cache, Enhanced LRC handling, track changes and media sessions. MediaStyle alone no longer classifies music as a download.
+- Improved consecutive messages, replies, mark-as-read actions and action wrapping.
+- Pending alarms use the secondary activity; improved false-alarm filtering and timer layout on narrow cards.
+- Preserved detected payment amounts and improved recognition of brief success screens; individual bank apps still require device testing.
+- Refined animations, notch-mode blur geometry, shortcut placement and landscape color-picker accessibility.
+- Reduced polling, redundant subscriptions and hidden-effect work; removed confirmed unused code.
+- Hardened download URLs, response limits, APK/certificate checks and partial-download cleanup.
+- **296 unit tests passed** on functional commit `1863d0b`; this does not replace testing every phone.
 
-## [1.7.1] — 2026-11-04
+### Compatibility
+System blur depends on Android and firmware. Face ID requires Shizuku and reliable face events. Hotspot, recording and Bluetooth data depend on the source. TrafficStats reports approximate total network speed, not an exact per-file rate.
 
-- ⏰ **Alarm time fix**: when Xiaomi Clock reports the next alarm an hour off, the island learns the real time from Clock's “Alarm in …” text and corrects it.
+### Updating
+The package remains `com.akira.island`. APKs for 1.6.1, 1.6.2, 1.6.5 and the verified test 1.7.0 use compatible signing certificates; versionCode is now 14. Android's standard installer asks for confirmation. Previous upgrade tests preserved data, but Android 15 restricted Accessibility again: you may need to manually allow restricted settings and re-enable the service. The complete final-APK upgrade flow on a physical device has not yet been verified.
 
-## [1.7.0] — 2026-11-04
-
-- 🇹🇷 **Turkish** language (Features → General → Language), Turkish dates and units, and Turkish Clock, navigation and payment screens are recognized.
-- 🏝️ Fork by Tr1Action: the app is now called Dinamik Ada (`com.tr1action.island`) with its own signing key; updates come from Tr1Action/Dynamic-Island-.
+Full list in Russian: [CHANGELOG-1.7.0-FULL.md](docs/CHANGELOG-1.7.0-FULL.md).
 
 ## [1.6.5] — 2026-10-28
 

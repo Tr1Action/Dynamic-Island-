@@ -34,11 +34,14 @@ object PopupHider {
         val pkg = sbn.packageName
         val dialer = runCatching { context.getSystemService(TelecomManager::class.java)?.defaultDialerPackage }.getOrNull()
         if (pkg == dialer || pkg == context.packageName || pkg == SystemBanners.SYSTEM_UI || pkg == SystemBanners.ANDROID) return
-        val entry = "$pkg|${sbn.uid}|$channel"
+        // StatusBarNotification.uid yalnızca Android 10+; eskilerde uygulamanın uid'i paket yöneticisinden
+        val uid = if (android.os.Build.VERSION.SDK_INT >= 29) sbn.uid
+            else runCatching { context.packageManager.getApplicationInfo(pkg, 0).uid }.getOrNull() ?: return
+        val entry = "$pkg|$uid|$channel"
         synchronized(tried) { if (!tried.add(entry)) return }
         val app = context.applicationContext
         worker.execute {
-            if (run(app, "lower", pkg, sbn.uid.toString(), channel)) {
+            if (run(app, "lower", pkg, uid.toString(), channel)) {
                 val p = app.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
                 p.edit().putStringSet(KEY_CHANGED, HashSet(p.getStringSet(KEY_CHANGED, emptySet())!!) + entry).apply()
             }

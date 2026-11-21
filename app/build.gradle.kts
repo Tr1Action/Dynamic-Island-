@@ -13,8 +13,9 @@ android {
         applicationId = "com.tr1action.island"
         minSdk = 26
         targetSdk = 35
-        versionCode = 19
-        versionName = "1.8.4"
+        versionCode = 20
+        versionName = "1.9.0"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     // Ключ подписи в репозитории не хранится: релизный APK собирается без подписи,
@@ -37,10 +38,19 @@ android {
     }
     buildFeatures {
         compose = true
+        aidl = true
     }
 }
 
 dependencies {
+    implementation("dev.rikka.shizuku:api:13.1.5")
+    implementation("dev.rikka.shizuku:provider:13.1.5")
+    androidTestImplementation(platform("androidx.compose:compose-bom:2024.12.01"))
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    androidTestImplementation("androidx.test:runner:1.6.2")
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.json:json:20240303")
     val composeBom = platform("androidx.compose:compose-bom:2024.12.01")
     implementation(composeBom)
 
@@ -51,8 +61,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
     implementation("androidx.savedstate:savedstate-ktx:1.2.1")
     implementation("androidx.palette:palette-ktx:1.0.0")
-    // Gizli BackgroundBlurDrawable API'sine erişim: adanın arkasını gerçekten bulanıklaştırmak için
-    implementation("org.lsposed.hiddenapibypass:hiddenapibypass:6.1")
 
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
