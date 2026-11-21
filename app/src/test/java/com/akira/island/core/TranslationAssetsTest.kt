@@ -17,7 +17,7 @@ class TranslationAssetsTest {
     @Test
     fun translatedTablesCoverExistingStringsAndPreserveFormatting() {
         val baseline = Json.parseToJsonElement(File(assets, "fr.json").readText()).jsonObject.keys
-        for (language in listOf("id", "pt", "kk", "fr", "es")) {
+        for (language in listOf("tr", "id", "pt", "kk", "fr", "es")) {
             val table = Json.parseToJsonElement(File(assets, "$language.json").readText()).jsonObject
             assertEquals("$language must cover the same strings as the other translations", baseline, table.keys)
             for ((key, value) in table) {
@@ -32,6 +32,7 @@ class TranslationAssetsTest {
 
     @Test
     fun translatedLanguagesAreSelectable() {
+        assertEquals("tr", AppLanguage.TR.code)
         assertEquals("id", AppLanguage.ID.code)
         assertEquals("pt", AppLanguage.PT.code)
         assertEquals("kk", AppLanguage.KK.code)

@@ -26,7 +26,7 @@ data class FoundLyrics(val lines: List<LyricLine>, val synced: Boolean)
  * потом NetEase — там много русской и азиатской музыки.
  */
 object LyricsRepo {
-    private const val UA = "DynamicIslandAndroid/1.2 (https://github.com/Akira9021/Dynamic-Island-)"
+    private const val UA = "DynamicIslandAndroid/1.2 (https://github.com/Tr1Action/Dynamic-Island-)"
 
     private val cache = LyricsCache()
     private val backoff = LyricsProviderBackoff()

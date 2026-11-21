@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Dinamik Ada</string>
+    <string name="a11y_label">Dinamik Ada</string>
+    <string name="tile_label">Ada</string>
+    <string name="a11y_desc">Kameranın üstünde Dynamic Island tarzı bir kapsül gösterir: müzik, zamanlayıcılar, indirme ilerlemesi, el feneri ve sistem olayları. Hizmet, oynatıcıyı gizlemek ve ödemeleri göstermek için hangi uygulamanın açık olduğunu öğrenir. Ekran yalnızca navigasyon uygulamaları (Google Haritalar, Yandex Navigasyon, 2GIS ve diğerleri), Saat uygulaması ve ödeme uygulamaları açıkken okunur: navigasyonda bir sonraki dönüşe mesafe, sokak, varış saati ve ok yönü; Saat\'te zamanlayıcı ve kronometre süresi; ödeme uygulamalarında (Google Cüzdan ve diğerleri) telefonla ödeme ekranı ve tutar — önce “Okuyucuya yaklaştırın”, sonra “Ödendi” göstermek için. Okunanlar telefonda kalır; internete yalnızca şarkı adı ve sanatçı gider — söz bulmak için.</string>
+</resources>

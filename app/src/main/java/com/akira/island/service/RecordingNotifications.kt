@@ -26,18 +26,18 @@ private val cameras = setOf("com.android.camera", "com.android.camera2", "com.se
 private val recordingWords = listOf("record", "запис", "grava", "grab", "rekam", "aufnahme", "enregistr", "registraz",
     "nagryw", "kayıt", "đang ghi", "录", "錄", "録", "녹음", "녹화", "жазба", "жазып")
 private val activeWords = listOf("recording", "идет запись", "запись экрана", "запись звука", "запись видео", "аудиозапись",
-    "perekaman", "sedang merekam", "enregistrement en cours", "grabando", "gravando", "正在录", "正在錄", "녹음 중", "녹화 중")
-private val screenWords = listOf("screen", "экран", "layar", "tela", "pantalla", "écran", "bildschirm", "屏幕", "画面", "화면")
+    "perekaman", "sedang merekam", "enregistrement en cours", "kaydediliyor", "kayıt yapılıyor", "grabando", "gravando", "正在录", "正在錄", "녹음 중", "녹화 중")
+private val screenWords = listOf("screen", "экран", "layar", "tela", "pantalla", "écran", "ekran", "bildschirm", "屏幕", "画面", "화면")
 private val videoWords = listOf("video", "видео", "відео", "vídeo", "видеозапись", "動画", "视频", "影片", "동영상")
 private val voiceWords = listOf("voice", "audio", "sound", "диктофон", "звука", "голоса", "аудио", "suara", "voix", "vocal", "เสียง", "녹음")
 private val stopWords = listOf("стоп", "останов", "заверш", "stop", "finish", "berhenti", "hentikan", "parar", "detener",
-    "тоқтату", "аяқтау", "beenden", "arrêter", "停止", "結束", "終了", "중지")
-private val pauseWords = listOf("pause", "пауза", "приостанов", "pausar", "jeda", "暂停", "暫停", "一時停止", "일시")
-private val resumeWords = listOf("resume", "продолж", "возобнов", "retomar", "continuar", "lanjut", "reprendre", "继续", "繼續", "再開")
-private val saveWords = listOf("save", "сохран", "готово", "done", "salvar", "simpan", "guardar", "enregistrer", "保存", "저장")
+    "тоқтату", "аяқтау", "beenden", "arrêter", "durdur", "bitir", "停止", "結束", "終了", "중지")
+private val pauseWords = listOf("pause", "пауза", "приостанов", "pausar", "jeda", "duraklat", "暂停", "暫停", "一時停止", "일시")
+private val resumeWords = listOf("resume", "продолж", "возобнов", "retomar", "continuar", "lanjut", "reprendre", "devam", "sürdür", "继续", "繼續", "再開")
+private val saveWords = listOf("save", "сохран", "готово", "done", "salvar", "simpan", "guardar", "enregistrer", "kaydet", "保存", "저장")
 private val playbackWords = listOf("playing", "playback", "listening", "воспроизв", "прослуш", "reproduciendo", "reproduzindo", "pemutaran")
 private val finishedWords = listOf("recording saved", "saved recording", "recording complete", "recording finished", "recording stopped",
-    "saving recording", "processing recording", "запись сохраняется", "сохранение записи", "запись сохран", "запись заверш", "запись останов", "записано", "rekaman disimpan", "enregistrement terminé")
+    "saving recording", "processing recording", "запись сохраняется", "сохранение записи", "запись сохран", "запись заверш", "запись останов", "записано", "rekaman disimpan", "enregistrement terminé", "kayıt kaydedildi", "kayıt tamamlandı")
 private val transferWords = listOf("download", "upload", "загруз", "скачив", "unduh", "mengunggah", "télécharg")
 
 private fun String.normalized() = lowercase(Locale.ROOT).replace('ё', 'е')

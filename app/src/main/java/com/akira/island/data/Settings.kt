@@ -172,11 +172,12 @@ enum class MessageIconPosition(private val ru: String, private val en: String) {
  */
 @Serializable
 enum class AppLanguage(val code: String) {
-    SYSTEM(""), RU("ru"), EN("en"), ID("id"), PT("pt"), KK("kk"), FR("fr"), ES("es");
+    SYSTEM(""), TR("tr"), RU("ru"), EN("en"), ID("id"), PT("pt"), KK("kk"), FR("fr"), ES("es");
 
     val title: String
         get() = when (this) {
             SYSTEM -> tr("Как в системе", "System default")
+            TR -> "Türkçe"
             RU -> "Русский"
             EN -> "English"
             ID -> "Bahasa Indonesia"
@@ -191,7 +192,7 @@ enum class AppLanguage(val code: String) {
 data class IslandSettings(
     val enabled: Boolean = true,
     /** Язык приложения и острова */
-    val language: AppLanguage = AppLanguage.SYSTEM,
+    val language: AppLanguage = AppLanguage.TR,
 
     // Динамические карточки
     val cardMedia: Boolean = true,

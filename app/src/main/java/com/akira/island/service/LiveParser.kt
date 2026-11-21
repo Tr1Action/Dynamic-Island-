@@ -39,7 +39,7 @@ object LiveParser {
 
     private val distance = Regex("""(\d{1,3}(?:[.,]\d{1,2})?)\s?(км|метров|метра|м|km|mi|ft|m)\.?(?!\p{L})""", RegexOption.IGNORE_CASE)
     private val clock = Regex("""\b\d{1,2}:\d{2}\b""")
-    private val minutes = Regex("""\b\d{1,3}\s?(мин|ч|min|h)\b""", RegexOption.IGNORE_CASE)
+    private val minutes = Regex("""\b\d{1,3}\s?(мин|ч|min|h|dk|dakika|sa|saat)\b""", RegexOption.IGNORE_CASE)
 
     fun parse(context: Context, sbn: StatusBarNotification, fallbackTitle: String): LiveInfo? {
         val n = sbn.notification
@@ -148,8 +148,8 @@ object LiveParser {
             val n = if (frac.isEmpty()) whole else if (c == "en") "$whole.$frac" else "$whole,$frac"
             val u = when (unit) {
                 "км" -> "km"
-                "мин" -> if (c == "id") "mnt" else "min"
-                "ч" -> if (c == "id") "j" else "h"
+                "мин" -> when (c) { "id" -> "mnt"; "tr" -> "dk"; else -> "min" }
+                "ч" -> when (c) { "id" -> "j"; "tr" -> "sa"; else -> "h" }
                 else -> "m"
             }
             "$n $u"
@@ -168,6 +168,7 @@ object LiveParser {
     private val maneuverWords = listOf(
         "поверн", "держит", "съезд", "съехать", "развер", "разворот", "прямо", "налево", "направо", "левее", "правее",
         "turn", "keep", "exit", "u-turn", "continue",
+        "dönün", "dönüş", "sapın", "çıkış", "kalın", "devam", "sola", "sağa",
     )
     private val notInstruction = listOf("по шагам", "по gps", "шаг ")
 
@@ -181,10 +182,10 @@ object LiveParser {
     internal fun detectTurn(texts: List<String>): Turn? {
         val t = texts.joinToString(" ").lowercase()
         return when {
-            listOf("разворот", "развернитесь", "u-turn", "uturn", "make a u").any { it in t } -> Turn.UTURN
-            listOf("налево", "влево", "левее", "left").any { it in t } -> Turn.LEFT
-            listOf("направо", "вправо", "правее", "right").any { it in t } -> Turn.RIGHT
-            listOf("прямо", "straight", "продолжайте", "continue").any { it in t } -> Turn.STRAIGHT
+            listOf("разворот", "развернитесь", "u-turn", "uturn", "make a u", "u dönüşü", "geri dönün").any { it in t } -> Turn.UTURN
+            listOf("налево", "влево", "левее", "left", "sola", "solda").any { it in t } -> Turn.LEFT
+            listOf("направо", "вправо", "правее", "right", "sağa", "sağda").any { it in t } -> Turn.RIGHT
+            listOf("прямо", "straight", "продолжайте", "continue", "düz", "devam edin").any { it in t } -> Turn.STRAIGHT
             else -> null
         }
     }

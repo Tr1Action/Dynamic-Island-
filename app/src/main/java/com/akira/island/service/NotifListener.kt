@@ -381,7 +381,7 @@ object NotificationParser {
     private fun looksLikeTimer(n: Notification, title: String): Boolean {
         val t = (title + " " + n.channelId.orEmpty()).lowercase()
         return when {
-            "секундомер" in t || "stopwatch" in t -> false
+            "секундомер" in t || "stopwatch" in t || "kronometre" in t || "chronomètre" in t -> false
             else -> true
         }
     }

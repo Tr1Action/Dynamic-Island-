@@ -333,6 +333,7 @@ private fun languageTitle(): String = when (Lang.code) {
     "id" -> "Bahasa · Language"
     "pt" -> "Idioma · Language"
     "kk" -> "Тіл · Language"
+    "tr" -> "Dil · Language"
     else -> "Language"
 }
 

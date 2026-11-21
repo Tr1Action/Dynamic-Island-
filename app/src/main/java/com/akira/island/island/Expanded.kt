@@ -854,6 +854,7 @@ private fun IdleExpanded(s: IslandSettings, battery: BatteryInfo) {
     val pattern = when (Lang.code) {
         "en" -> "EEEE, MMMM d"
         "pt" -> "EEEE, d 'de' MMMM"
+        "tr" -> "d MMMM EEEE"
         else -> "EEEE, d MMMM"
     }
     val date = SimpleDateFormat(pattern, Lang.locale).format(Date(now))

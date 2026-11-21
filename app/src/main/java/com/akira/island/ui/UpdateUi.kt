@@ -217,7 +217,7 @@ fun ReleaseNotes(markdown: String, modifier: Modifier = Modifier) {
             val line = raw.trimEnd()
             when {
                 line.isBlank() || line.startsWith("## ") || line.startsWith("# ") || line == "---" ||
-                    line.startsWith("**Установка") || line.startsWith("**Install") -> Unit
+                    line.startsWith("**Установка") || line.startsWith("**Install") || line.startsWith("**Kurulum") -> Unit
                 line.startsWith("### ") -> Text(
                     line.removePrefix("### "), color = Ui.Primary, fontSize = 15.sp, fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.padding(top = 8.dp),

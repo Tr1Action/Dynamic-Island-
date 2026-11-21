@@ -82,7 +82,8 @@ object PayMonitor {
     private val bankSender = Regex(
         "^\\d{3,6}$|bank|банк|sber|сбер|tinkoff|т-банк|t-bank|vtb|втб|alfa|альфа|raiff|райф|gazprom|газпром|sovcom|совком|" +
             "pochta|почта|otkritie|открытие|mts|мтс|ozon|озон|psb|псб|rshb|россельхоз|uralsib|уралсиб|rosbank|росбанк|halva|халва|" +
-            "yoomoney|юmoney",
+            "yoomoney|юmoney|garanti|akbank|yapı ?kredi|yapikredi|isbank|iş ?bankası|ziraat|enpara|papara|qnb|denizbank|halkbank|vakıf|" +
+            "boursorama|bnp|société générale|crédit agricole|lcl|revolut|n26",
         RegexOption.IGNORE_CASE,
     )
 
@@ -186,7 +187,8 @@ object PayMonitor {
     private val skip = Regex(
         "пополн|зачисл|поступил|входящ|получен|вам перев|кэшбэк|кешбэк|cashback|возврат|refund|отклон|отказ|declined|не удал|ошибк|" +
             "не прошл|не выполн|недостаточно|не хватает|не оплач|к оплате|на оплату|оплатит|заплатит|" +
-            "напомина|будет списан|спишем|спишется|предстоящ|ожидает|обработке|pending|scheduled|due|remind|failed|unsuccessful|insufficient|request|received",
+            "напомина|будет списан|спишем|спишется|предстоящ|ожидает|обработке|pending|scheduled|due|remind|failed|unsuccessful|insufficient|request|received|" +
+            "iade|havale|para transferi|yatırıldı|başarısız|reddedildi|virement|remboursement|reçu",
         RegexOption.IGNORE_CASE,
     )
 

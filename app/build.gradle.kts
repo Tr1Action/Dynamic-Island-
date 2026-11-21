@@ -10,11 +10,11 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.akira.island"
+        applicationId = "com.tr1action.island"
         minSdk = 26
         targetSdk = 35
-        versionCode = 16
-        versionName = "1.7.2"
+        versionCode = 20
+        versionName = "1.9.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
